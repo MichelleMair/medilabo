@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.medilabo.MedilaboSolutions.Repository.PatientRepository;
 import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
 import com.medilabo.MedilaboSolutions.model.Patient;
+import com.medilabo.MedilaboSolutions.repository.PatientRepository;
 
 @Service
 public class PatientService {

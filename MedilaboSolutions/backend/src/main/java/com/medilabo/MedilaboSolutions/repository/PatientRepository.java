@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.Repository;
+package com.medilabo.MedilaboSolutions.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
