@@ -1,7 +1,6 @@
 package com.medilabo.MedilaboSolutions.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
 import com.medilabo.MedilaboSolutions.model.Patient;
 import com.medilabo.MedilaboSolutions.service.PatientService;
 
@@ -36,13 +36,14 @@ public class PatientController {
 	//Get a patient by id
 	@GetMapping("/{id}")
 	public ResponseEntity<Patient> getPatientById(@PathVariable String id) {
-		Optional<Patient> patient = patientService.getPatientById(id);
 		
-		if(patient.isPresent()) {
-			return ResponseEntity.ok(patient.get());
-		} else {
+		try {
+			Patient patient = patientService.getPatientById(id);
+			return ResponseEntity.ok(patient);
+		} catch (PatientNotFoundException ex) {
 			return ResponseEntity.notFound().build();
 		}
+		
 	}
 	
 	//Add new patient

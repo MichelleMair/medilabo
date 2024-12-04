@@ -1,7 +1,6 @@
 package com.medilabo.MedilaboSolutions.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +25,9 @@ public class PatientService {
 	}
 	
 	//Get patient by id
-	public Optional<Patient> getPatientById(String id) {
-		return patientRepository.findById(id);
+	public Patient getPatientById(String id) {
+		return patientRepository.findById(id)
+				.orElseThrow(() -> new PatientNotFoundException("Patient not found with ID: " + id));
 	}
 	
 	//add new patient
