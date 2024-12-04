@@ -19,3 +19,6 @@ MedilaboSolutions/target/
 ### Fichiers temp system ###
 .DS_Store
 Thumbs.db
+
+### Ignorer les fichiers compilés ###
+MedilaboSolutions/backend/bin/
