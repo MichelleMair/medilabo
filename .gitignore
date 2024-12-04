@@ -1,0 +1,21 @@
+### Fichiers de documentation ###
+HELP.md
+
+### Répertoires de build ###
+/target/
+MedilaboSolutions/target/
+
+### Configuration Eclipse ###
+.classpath
+.project
+.settings
+.apt_generated
+.factorypath
+.springBeans
+
+### Fichiers de logs ###
+.log
+
+### Fichiers temp system ###
+.DS_Store
+Thumbs.db
