@@ -1,17 +1,17 @@
 package com.medilabo.MedilaboSolutions.config;
 
-import java.time.LocalDate;
-
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.medilabo.MedilaboSolutions.model.Patient;
-import com.medilabo.MedilaboSolutions.repository.PatientRepository;
 
 @Configuration
 public class DataLoader {
 
+	/*
+	 * Please follow instructions in README file
+	 * Enable this class to insert initial data to MongoDB database
+	 * Once data has bee successfully insert to database
+	 * please disable this class to avoid reinserting data on every app startup
+	 * 
+	 * 
 	@Bean
 	public CommandLineRunner loadData(PatientRepository patientRepository) {
 		return args -> {
@@ -28,4 +28,5 @@ public class DataLoader {
 			}
 		};
 	}
+	*/
 }
