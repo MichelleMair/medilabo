@@ -1,6 +1,9 @@
 package com.medilabo.MedilaboSolutions.integration.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -63,6 +66,40 @@ public class PatientControllerIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.firstName").value("John"));
+	}
+	
+	@Test
+	void testAddPatient() throws Exception {
+		Patient newPatient = new Patient();
+		
+		newPatient.setFirstName("Jane");
+		newPatient.setLastName("Smith");
+		newPatient.setDateOfBirth(LocalDate.of(1990, 11, 22));
+		newPatient.setGender("Female");
+		
+		mockMvc.perform(post("/api/patients")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(newPatient)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.firstName").value("Jane"));
+	}
+	
+	@Test
+	void testUpdatePatient() throws Exception {
+		testPatient.setLastName("Updated");
+		
+		mockMvc.perform(put("/api/patients/" + testPatient.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(testPatient)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.lastName").value("Updated"));
+	}
+	
+	@Test
+	void testDeletePatient() throws Exception{
+		mockMvc.perform(delete("/api/patients/" + testPatient.getId())
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
 	
 }
