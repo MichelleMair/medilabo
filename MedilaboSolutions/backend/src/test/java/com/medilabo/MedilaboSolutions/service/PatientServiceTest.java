@@ -12,14 +12,17 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
 import com.medilabo.MedilaboSolutions.model.Patient;
 import com.medilabo.MedilaboSolutions.repository.PatientRepository;
 
+@ActiveProfiles("test")
 public class PatientServiceTest {
 
 	@Mock
@@ -58,5 +61,42 @@ public class PatientServiceTest {
 		when(patientRepository.findById("123")).thenReturn(Optional.empty());
 		
 		assertThrows(PatientNotFoundException.class, () -> patientService.getPatientById("123"));
+	}
+	
+	@Test
+	void testAddPatient() {
+		when(patientRepository.save(ArgumentMatchers.any(Patient.class))).thenReturn(testPatient);
+		
+		Patient result = patientService.addPatient(testPatient);
+		
+		assertNotNull(result);
+		assertEquals("John", result.getFirstName());
+		assertEquals("Doe", result.getLastName());
+		verify(patientRepository, times(1)).save(testPatient);
+	}
+	
+	@Test
+	void testUpdatePatientSuccess() {
+		when(patientRepository.findById("123")).thenReturn(Optional.of(testPatient));
+		when(patientRepository.save(ArgumentMatchers.any(Patient.class))).thenReturn(testPatient);
+		
+		Patient updatedPatient = new Patient();
+		updatedPatient.setFirstName("Jane");
+		
+		Patient result = patientService.updatePatient("123", updatedPatient);
+		
+		assertEquals("Jane", result.getFirstName());
+		verify(patientRepository, times(1)).findById("123");
+		verify(patientRepository, times(1)).save(ArgumentMatchers.any(Patient.class));
+	}
+	
+	@Test
+	void testUpdatePatientNotFound() {
+		when(patientRepository.findById("123")).thenReturn(Optional.empty());
+		
+		Patient updatedPatient = new Patient();
+		updatedPatient.setFirstName("Jane");
+		
+		assertThrows(PatientNotFoundException.class, () -> patientService.updatePatient("123", updatedPatient));
 	}
 }
