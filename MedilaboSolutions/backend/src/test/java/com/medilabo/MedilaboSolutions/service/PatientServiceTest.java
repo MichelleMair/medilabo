@@ -16,13 +16,13 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.ActiveProfiles;
+//import org.springframework.test.context.ActiveProfiles;
 
 import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
 import com.medilabo.MedilaboSolutions.model.Patient;
 import com.medilabo.MedilaboSolutions.repository.PatientRepository;
 
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 public class PatientServiceTest {
 
 	@Mock
