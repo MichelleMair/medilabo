@@ -1,0 +1,10 @@
+<h1>{{ patient.id ? 'Update Patient' : 'Add Patient' }}</h1>
+<form (ngSubmit)="savePatient()">
+    <label for="name">Name:</label>
+    <input id="name" type="text" [(ngModel)]="patient.name" name="name" required/>
+
+    <label for="age">Age:</label>
+    <input id="age" type="number" [(ngModel)]="patient.age" name="age" required/>
+
+    <button type="submit"> {{ patient.id ? 'Update' : 'Save' }}</button>
+</form>
