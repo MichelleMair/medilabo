@@ -1,10 +1,18 @@
 <h1>Authentication</h1>
 <form (ngSubmit)="onLogin()">
-    <label for="username">Username: </label>
-    <input id="username" type="text" [(ngModel)]="credentials.username" name="username" required/>
+    <div>
+        <label for="username">Username:</label>
+        <input id="username" type="text" [(ngModel)]="credentials.username" name="username" required/>
+    </div>
 
-    <label for="password">Password: </label>
-    <input id="password" type="password" [(ngModel)]="credentials.password" name="password" required/>
+    <div>
+        <label for="password">Password:</label>
+        <input id="password" type="password" [(ngModel)]="credentials.password" name="password" required/>
+    </div>
 
     <button type="submit">Login</button>
+
+    <div *ngIf="errorMessage" style="color: red;">
+        {{ errorMessage }}
+    </div>
 </form>

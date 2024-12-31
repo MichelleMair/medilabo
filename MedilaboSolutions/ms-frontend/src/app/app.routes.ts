@@ -8,4 +8,5 @@ export const routes: Routes = [
     { path: 'auth', component: AuthComponent },
     { path: 'patients' , component: PatientsComponent},
     { path: 'patient-form', component: PatientFormComponent},
+    { path: '**', redirectTo: 'auth' }
 ];

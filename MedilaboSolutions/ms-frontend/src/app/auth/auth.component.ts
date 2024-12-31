@@ -1,17 +1,31 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.css',
-  imports: [FormsModule],
+  styleUrls: ['./auth.component.css'],
+  imports: [FormsModule, NgIf],
 })
 export class AuthComponent {
   credentials = { username: '', password: ''};
+  errorMessage: string = '';
+
+  constructor(private http: HttpClient, private router : Router) {}
 
   onLogin() {
-    console.log('Logging in with', this.credentials);
-    //TODO: connect to backend for authentication
+    this.http.post('http://localhost:8082/api/auth/login', this.credentials).subscribe({
+      next: () => {
+        console.log('Login successful');
+        this.router.navigate(['/patients']);
+      },
+      error: (err) => {
+        console.error('Login failed', err);
+        this.errorMessage = 'Invalid username or password';
+      },
+    });
   }
 }
