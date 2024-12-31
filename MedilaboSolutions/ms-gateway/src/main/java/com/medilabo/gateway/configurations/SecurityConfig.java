@@ -30,6 +30,7 @@ public class SecurityConfig {
 			.cors(cors -> cors.configurationSource(corsConfigurationSource())) //Adding cors
 			.authorizeExchange(exchange -> exchange
 					.pathMatchers("/api/patients/**").authenticated() // Secured routes
+					.pathMatchers("/api/auth/login").permitAll()
 					.pathMatchers("/actuator/**").permitAll() //Authorize actuator for monitoring
 					.anyExchange().permitAll()) //all others requests are public
 			.httpBasic(withDefaults());
