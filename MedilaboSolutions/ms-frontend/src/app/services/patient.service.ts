@@ -6,16 +6,16 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PatientService {
-  private apiUrl = 'http://localhost:8082/api/patients';
+  private apiUrl = `http://localhost:8082/api/patients`;
 
   constructor(private http: HttpClient) { }
 
   getPatients(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
   addPatient(patient: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, patient);
+    return this.http.post<any>(`${this.apiUrl}`, patient);
   }
 
   updatePatient(patient: any): Observable<any> {
