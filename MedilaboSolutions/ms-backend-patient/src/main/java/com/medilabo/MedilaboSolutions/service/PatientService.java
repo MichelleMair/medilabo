@@ -2,7 +2,6 @@ package com.medilabo.MedilaboSolutions.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
@@ -14,7 +13,6 @@ public class PatientService {
 	
 	private final PatientRepository patientRepository;
 	
-	@Autowired
 	public PatientService(PatientRepository patientRepository) {
 		this.patientRepository = patientRepository;
 	}
