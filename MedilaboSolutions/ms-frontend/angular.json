@@ -13,7 +13,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ms-frontend",
+            "outputPath": "../ms-gateway/src/main/resources/static/ms-frontend/browser",
+            "baseHref": "/ms-frontend/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
