@@ -29,10 +29,10 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable()) //disable csrf for local tests
 			.cors(cors -> cors.configurationSource(corsConfigurationSource())) //Adding cors
 			.authorizeExchange(exchange -> exchange
-					.pathMatchers("/api/patients/**").authenticated() // Secured routes
-					.pathMatchers("/api/auth/login").permitAll()
+					.pathMatchers("/api/auth/**").authenticated() // Secured routes
 					.pathMatchers("/ms-frontend/**").permitAll()
-					.pathMatchers("/actuator/**").permitAll() //Authorize actuator for monitoring
+					.pathMatchers("/api/patients/**").permitAll()
+					//.pathMatchers("/actuator/**").permitAll() //Authorize actuator for monitoring
 					.anyExchange().authenticated()) //all others requests are public
 			.httpBasic(withDefaults());
 		return http.build();
