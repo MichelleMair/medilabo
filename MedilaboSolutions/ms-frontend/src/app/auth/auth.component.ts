@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
-  imports: [FormsModule, NgIf],
 })
 export class AuthComponent {
   credentials = { username: '', password: ''};

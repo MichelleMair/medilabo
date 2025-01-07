@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { PatientService } from '../services/patient.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-form',
-  imports: [FormsModule],
   templateUrl: './patient-form.component.html',
-  styleUrl: './patient-form.component.css'
+  styleUrls: ['./patient-form.component.css']
 })
 export class PatientFormComponent implements OnInit{
   patient = { id: null, name: '', age: null };

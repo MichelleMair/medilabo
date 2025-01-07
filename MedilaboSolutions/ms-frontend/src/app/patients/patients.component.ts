@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { PatientService } from '../services/patient.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patients',
-  imports: [ CommonModule ],
   templateUrl: './patients.component.html',
-  styleUrl: './patients.component.css'
+  styleUrls: ['./patients.component.css']
 })
 export class PatientsComponent {
   patients: any[] = [];
