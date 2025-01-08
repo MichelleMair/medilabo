@@ -28,17 +28,19 @@ export class PatientFormComponent implements OnInit{
   }
 
   savePatient() {
+    if (!this.patient.name || !this.patient.age) {
+      console.error('Name and age are required');
+      return;
+    }
     if (this.patient.id) {
-      //Updating existing patient
       this.patientService.updatePatient(this.patient).subscribe(() => {
-        console.log('Patient updated successfully!');
+        console.log('Patient updated successfully.');
         this.router.navigate(['/patients']);
       });
     } else {
-      //Create new patient
       this.patientService.addPatient(this.patient).subscribe(() => {
-        console.log('Patient added successfully!');
-        this.router.navigate(['/patients']); //redirecting to patient list
+        console.log('Patient added successfully.');
+        this.router.navigate(['/patients']);
       });
     }
   }
