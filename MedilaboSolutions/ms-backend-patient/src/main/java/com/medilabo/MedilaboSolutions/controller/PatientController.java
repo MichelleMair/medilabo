@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
 import com.medilabo.MedilaboSolutions.model.Patient;
 import com.medilabo.MedilaboSolutions.service.PatientService;
 
@@ -36,14 +35,8 @@ public class PatientController {
 	//Get a patient by id
 	@GetMapping("/{id}")
 	public ResponseEntity<Patient> getPatientById(@PathVariable String id) {
-		
-		try {
 			Patient patient = patientService.getPatientById(id);
 			return ResponseEntity.ok(patient);
-		} catch (PatientNotFoundException ex) {
-			return ResponseEntity.notFound().build();
-		}
-		
 	}
 	
 	//Add new patient
