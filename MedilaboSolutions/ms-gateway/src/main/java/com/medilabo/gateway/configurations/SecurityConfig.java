@@ -26,7 +26,7 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		http.csrf(csrf -> csrf.disable()) //disable csrf for local tests
+		http.csrf(ServerHttpSecurity.CsrfSpec::disable) //disable csrf for local testing
 			.cors(cors -> cors.configurationSource(corsConfigurationSource())) //Adding cors
 			.authorizeExchange(exchange -> exchange
 					.pathMatchers("/api/auth/**").permitAll() // Secured routes

@@ -22,7 +22,7 @@ public class GatewayConfig {
 				// Route for frontend
 				.route("frontend-service", r -> r.path("/ms-frontend/**")
 						.filters(f -> f.rewritePath("/ms-frontend/(?<remaining>.*)", "/${remaining}"))
-						.uri("file:///./target/classes/static"))
+						.uri("file:///./src/main/resources/static/ms-frontend/"))
 				.build();
 				
 	}
