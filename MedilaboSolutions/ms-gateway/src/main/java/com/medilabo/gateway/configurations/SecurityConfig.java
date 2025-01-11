@@ -26,15 +26,13 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		http.csrf(ServerHttpSecurity.CsrfSpec::disable) //disable csrf for local testing
-			.cors(cors -> cors.configurationSource(corsConfigurationSource())) //Adding cors
-			.authorizeExchange(exchange -> exchange
-					.pathMatchers("/api/auth/**").permitAll() // Secured routes
-					.pathMatchers("/ms-frontend/**").permitAll()
-					.pathMatchers("/api/patients/**").authenticated()
-					//.pathMatchers("/actuator/**").permitAll() //Authorize actuator for monitoring
-					.anyExchange().authenticated())
-			.httpBasic(withDefaults());
+		http.authorizeExchange(exchanges -> exchanges
+				.pathMatchers("/api/auth/**").permitAll()
+				.pathMatchers("/api/patients/**").authenticated()
+				.anyExchange().authenticated())
+			.httpBasic(withDefaults())
+			.csrf(ServerHttpSecurity.CsrfSpec::disable)
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 		return http.build();
 	}
 	
@@ -57,9 +55,9 @@ public class SecurityConfig {
 		CorsConfiguration configuration = new CorsConfiguration();
 		
 		configuration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-		configuration.setAllowedHeaders(Arrays.asList("*"));
-		configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true);
 		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
