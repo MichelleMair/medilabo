@@ -86,6 +86,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>ms-backend-patient</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

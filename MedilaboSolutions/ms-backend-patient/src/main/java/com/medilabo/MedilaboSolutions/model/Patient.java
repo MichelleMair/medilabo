@@ -32,7 +32,7 @@ public class Patient {
 	@Past(message= "Date of birth must be in the past")
 	private LocalDate dateOfBirth;
 	
-	@Pattern(regexp= "^(Male|Female|Other)?$", message= "Gender must be 'Male', 'Female', or 'Other'. ")
+	@Pattern(regexp= "^(Male|Female|Other)$", message= "Gender must be 'Male', 'Female', or 'Other'. ")
 	private String gender;
 	
 	private String address;

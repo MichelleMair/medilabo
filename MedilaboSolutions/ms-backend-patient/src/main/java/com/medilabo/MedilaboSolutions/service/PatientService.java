@@ -41,7 +41,7 @@ public class PatientService {
 			throw new IllegalArgumentException("A patient with the same name and date of birth already exists.");
 		}
 		
-		logger.info("Adding patient : {}" + patient);
+		logger.info("Adding patient : {}", patient);
 		return patientRepository.save(patient);
 	}
 	
@@ -72,7 +72,7 @@ public class PatientService {
 		Patient existingPatient = patientRepository.findById(id)
 				.orElseThrow(() -> new PatientNotFoundException("Patient not found with ID: " + id));
 		
-		logger.info("Finding patient by ID : {}" + existingPatient);
+		logger.info("Finding patient by ID : {}", existingPatient);
 		
 		patientRepository.delete(existingPatient);
 	}
