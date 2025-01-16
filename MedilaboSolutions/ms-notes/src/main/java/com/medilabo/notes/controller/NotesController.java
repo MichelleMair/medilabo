@@ -2,6 +2,7 @@ package com.medilabo.notes.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,7 @@ public class NotesController {
 	@PostMapping
 	public ResponseEntity<Notes> addNote (@RequestBody Notes note) {
 		Notes savedNote = notesService.addNote(note);
-		return ResponseEntity.ok(savedNote);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedNote);
 	}
 	
 	/**
@@ -61,7 +62,7 @@ public class NotesController {
 	
 	@DeleteMapping("/{noteId}")
 	public ResponseEntity<Void> deleteNote (@PathVariable String noteId) {
-		notesService.deleteNote(noteId);
+		notesService.deleteNoteById(noteId);
 		return ResponseEntity.noContent().build();
 	}
 }

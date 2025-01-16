@@ -17,9 +17,13 @@ public class Notes {
 	@Id
 	private String id;
 	
-	@NotNull(message= "Patient id is required")
+	@NotNull(message= "Patient ID is required")
 	private String patId;
+	
+	@NotNull(message= "Patient name is required")
 	private String patient;
+	
+	@NotNull(message= "Note content is required")
 	private String note;	
 	
 }

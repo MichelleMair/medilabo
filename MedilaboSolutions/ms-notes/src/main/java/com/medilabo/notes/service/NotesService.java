@@ -42,7 +42,7 @@ public class NotesService {
 	}
 	
 	//Delete note
-	public void deleteNote(String noteId) {
+	public void deleteNoteById(String noteId) {
 		Optional<Notes> existingNote = notesRepository.findById(noteId);
 		
 		if (existingNote.isPresent()) {
