@@ -16,6 +16,11 @@ public class NotesService {
 	public NotesService(NotesRepository notesRepository) {
 		this.notesRepository = notesRepository;
 	}
+	
+	//Get all notes
+	public List<Notes> getAllNotes() {
+		return notesRepository.findAll();
+	}
 
 	// Get notes with patientID
 	public List<Notes> getNotesByPatientId(String patId) {

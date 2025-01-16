@@ -26,6 +26,17 @@ public class NotesController {
 		this.notesService = notesService;
 	}
 	
+	
+	/**
+	 * Endpoint to get all notes existing in database
+	 * @return all notes
+	 */
+	@GetMapping
+	public ResponseEntity<List<Notes>> getAllNotes() {
+		List<Notes> notesList = notesService.getAllNotes();
+		return ResponseEntity.ok(notesList);
+	}
+	
 	/**
 	 * Endpoint to get all notes for a specific patient
 	 * @param patientId
