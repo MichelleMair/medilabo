@@ -23,6 +23,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
+import com.medilabo.gateway.util.JwtConstants;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 
 @Configuration
@@ -51,7 +52,7 @@ public class SecurityConfig {
 	
 	@Bean
 	public JwtEncoder jwtEncoder() {
-		SecretKeySpec secretKey = new SecretKeySpec("mySecretKey".getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+		SecretKeySpec secretKey = new SecretKeySpec(JwtConstants.SECRET_KEY.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
 		return new NimbusJwtEncoder(new ImmutableSecret<>(secretKey));
 	}
 	

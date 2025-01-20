@@ -8,6 +8,8 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import com.medilabo.gateway.util.JwtConstants;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -16,7 +18,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 @Component
 public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAuthenticationFilter.Config> {
 	
-	private final String secret = "mySecretKey"; // must be the same as in the JwtUtil class
+	private final String secret = JwtConstants.SECRET_KEY; 
 	
 	public JwtAuthenticationFilter() {
 		super(Config.class);
