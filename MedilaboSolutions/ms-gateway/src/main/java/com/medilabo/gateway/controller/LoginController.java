@@ -7,12 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 public class LoginController {
@@ -55,8 +58,13 @@ public class LoginController {
 					.claim("roles", "USER")
 					.build();
 			
-			String token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-			logger.info("Token JWT généré: {} ", token);
+			System.out.println("Claims: " + claims);
+			
+			JwtEncoderParameters parameters = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims);
+			
+			String token = this.jwtEncoder.encode(parameters).getTokenValue();
+			logger.info("Token JWT généré: {}", token);
+			
 			return Map.of("token", token);
 		}
 		logger.info("Echec de l'authentification pour l'utilisateur: {} ", providedUsername);

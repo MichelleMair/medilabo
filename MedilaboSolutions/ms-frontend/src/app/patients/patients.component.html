@@ -14,9 +14,22 @@
             <td>{{ patient.name }}</td>
             <td>{{ patient.age }}</td>
             <td>
+                <button (click)="viewNotes(patient.id)">View notes</button>
                 <button (click)="editPatient(patient)">Edit</button>
                 <button (click)="deletePatient(patient.id)">Delete</button>
             </td>
         </tr>
     </tbody>
 </table>
+
+<div *ngIf="selectedPatientNotes">
+    <h2>Notes for Patient {{ selectedPatientId }}</h2>
+    <ul>
+        <li *ngFor="let note of selectedPatientNotes">
+            {{note.note}}
+        </li>
+    </ul>
+    <h3>Add a new note</h3>
+    <textarea [(ngModel)]="newNoteContent"></textarea>
+    <button (click)="addNote()">Add note</button>
+</div>

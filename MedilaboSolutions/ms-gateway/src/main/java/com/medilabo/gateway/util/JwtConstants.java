@@ -1,6 +1,7 @@
 package com.medilabo.gateway.util;
 
 public class JwtConstants {
-
-	public static final String SECRET_KEY = "s5DvT9hR7zZ8pGfA1k7KoLhM3xPlRnXr";
+/*
+	public static final String SECRET_KEY = "VZt6BknY0azyGkSvLF1ve/2Vq1QBf67dniofFr/Q6hs=";
+	*/
 }

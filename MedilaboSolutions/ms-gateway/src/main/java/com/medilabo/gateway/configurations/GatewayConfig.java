@@ -28,6 +28,9 @@ public class GatewayConfig {
 				.route("patient-service", r -> r.path("/api/patients/**")
 						.filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config())))
 						.uri("http://localhost:8080"))
+				.route("notes-service", r -> r.path("/api/notes/**")
+						.filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config())))
+						.uri("http://localhost:8083"))				
 				//Default route
 				.route("default-route", r -> r.path("/**")
 						.filters(f -> f.setStatus(HttpStatus.NOT_FOUND))
