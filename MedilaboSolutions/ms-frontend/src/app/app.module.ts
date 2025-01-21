@@ -2,12 +2,13 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from "./app.component";
 import { AuthComponent } from "./auth/auth.component";
 import { PatientsComponent } from "./patients/patients.component";
 import { PatientFormComponent } from "./patient-form/patient-form.component";
+import { AuthInterceptor } from "./auth/auth.interceptor";
 
 //Routes
 const routes: Routes = [
@@ -32,7 +33,13 @@ const routes: Routes = [
         HttpClientModule,
         RouterModule.forRoot (routes)
     ],
-    providers: [],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+        },
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -14,9 +14,11 @@ export class AuthComponent {
   constructor(private http: HttpClient, private router : Router) {}
 
   onLogin() {
-    this.http.post('http://localhost:8082/api/auth/login', this.credentials).subscribe({
-      next: () => {
-        console.log('Login successful');
+    this.http.post<any>('http://localhost:8082/api/auth', this.credentials).subscribe({
+      next: (response) => {
+        console.log('Login successful', response);
+        //Stocker le token JWT dans le localStorage
+        localStorage.setItem('token', response.token);
         this.router.navigate(['/patients']);
       },
       error: (err) => {

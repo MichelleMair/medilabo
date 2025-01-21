@@ -50,15 +50,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AppModule: () => (/* binding */ AppModule)
 /* harmony export */ });
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/platform-browser */ 436);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/forms */ 4456);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 5072);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common/http */ 6443);
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/platform-browser */ 436);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ 4456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 5072);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 6443);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app.component */ 92);
 /* harmony import */ var _auth_auth_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth/auth.component */ 998);
 /* harmony import */ var _patients_patients_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./patients/patients.component */ 6878);
 /* harmony import */ var _patient_form_patient_form_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./patient-form/patient-form.component */ 950);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 7580);
+/* harmony import */ var _auth_auth_interceptor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./auth/auth.interceptor */ 1050);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 7580);
+
 
 
 
@@ -92,20 +94,25 @@ let AppModule = /*#__PURE__*/(() => {
     static ɵfac = function AppModule_Factory(t) {
       return new (t || AppModule)();
     };
-    static ɵmod = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({
+    static ɵmod = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineNgModule"]({
       type: AppModule,
       bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_0__.AppComponent]
     });
-    static ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({
-      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__.BrowserModule, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormsModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_7__.HttpClientModule, _angular_router__WEBPACK_IMPORTED_MODULE_8__.RouterModule.forRoot(routes)]
+    static ɵinj = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineInjector"]({
+      providers: [{
+        provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HTTP_INTERCEPTORS,
+        useClass: _auth_auth_interceptor__WEBPACK_IMPORTED_MODULE_4__.AuthInterceptor,
+        multi: true
+      }],
+      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__.BrowserModule, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormsModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClientModule, _angular_router__WEBPACK_IMPORTED_MODULE_9__.RouterModule.forRoot(routes)]
     });
   }
   return AppModule;
 })();
 (function () {
-  (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](AppModule, {
+  (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵsetNgModuleScope"](AppModule, {
     declarations: [_app_component__WEBPACK_IMPORTED_MODULE_0__.AppComponent, _auth_auth_component__WEBPACK_IMPORTED_MODULE_1__.AuthComponent, _patients_patients_component__WEBPACK_IMPORTED_MODULE_2__.PatientsComponent, _patient_form_patient_form_component__WEBPACK_IMPORTED_MODULE_3__.PatientFormComponent],
-    imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__.BrowserModule, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormsModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_7__.HttpClientModule, _angular_router__WEBPACK_IMPORTED_MODULE_8__.RouterModule]
+    imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__.BrowserModule, _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormsModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_6__.HttpClientModule, _angular_router__WEBPACK_IMPORTED_MODULE_9__.RouterModule]
   });
 })();
 
@@ -157,9 +164,11 @@ let AuthComponent = /*#__PURE__*/(() => {
       this.router = router;
     }
     onLogin() {
-      this.http.post('http://localhost:8082/api/auth/login', this.credentials).subscribe({
-        next: () => {
-          console.log('Login successful');
+      this.http.post('http://localhost:8082/api/auth', this.credentials).subscribe({
+        next: response => {
+          console.log('Login successful', response);
+          //Stocker le token JWT dans le localStorage
+          localStorage.setItem('token', response.token);
           this.router.navigate(['/patients']);
         },
         error: err => {
@@ -222,6 +231,46 @@ let AuthComponent = /*#__PURE__*/(() => {
     });
   }
   return AuthComponent;
+})();
+
+/***/ }),
+
+/***/ 1050:
+/*!******************************************!*\
+  !*** ./src/app/auth/auth.interceptor.ts ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AuthInterceptor: () => (/* binding */ AuthInterceptor)
+/* harmony export */ });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ 7580);
+
+let AuthInterceptor = /*#__PURE__*/(() => {
+  class AuthInterceptor {
+    intercept(request, next) {
+      // Récupérer le token stocké dans le localStorage
+      const token = localStorage.getItem('token');
+      if (token) {
+        //Ajouter le token à l'en-tête Authorization
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      }
+      return next.handle(request);
+    }
+    static ɵfac = function AuthInterceptor_Factory(t) {
+      return new (t || AuthInterceptor)();
+    };
+    static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
+      token: AuthInterceptor,
+      factory: AuthInterceptor.ɵfac
+    });
+  }
+  return AuthInterceptor;
 })();
 
 /***/ }),
