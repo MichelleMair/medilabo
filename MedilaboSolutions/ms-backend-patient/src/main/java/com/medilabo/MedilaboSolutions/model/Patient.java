@@ -3,6 +3,7 @@ package com.medilabo.MedilaboSolutions.model;
 import java.time.LocalDate;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +33,9 @@ public class Patient {
 	@Past(message= "Date of birth must be in the past")
 	private LocalDate dateOfBirth;
 	
+	@Transient
+	private int age;
+	
 	@Pattern(regexp= "^(Male|Female|Other)$", message= "Gender must be 'Male', 'Female', or 'Other'. ")
 	private String gender;
 	
@@ -39,5 +43,15 @@ public class Patient {
 	
 	@Pattern(regexp= "^\\+?[0-9\\-\\s]+$", message= "Phone number must be valid")
 	private String phoneNumber;
+	
+	public Patient(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String address, String phoneNumber) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+	}
 	
 }

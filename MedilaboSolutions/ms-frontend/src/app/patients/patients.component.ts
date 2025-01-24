@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PatientService } from '../services/patient.service';
 import { NotesService } from '../services/notes.service';
 import { Router } from '@angular/router';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-patients',
@@ -13,6 +14,7 @@ export class PatientsComponent {
   selectedPatientNotes: any[] | null = null;
   selectedPatientId: string = '';
   newNoteContent: string = '';
+  errorMessage: string = '';
 
   constructor(private patientService: PatientService, private notesService: NotesService, private router: Router) {}
 
@@ -21,8 +23,17 @@ export class PatientsComponent {
   }
 
   loadPatients() {
-    this.patientService.getPatients().subscribe((data) => {
-      this.patients = data;
+    this.patientService.getPatients().pipe(
+      switchMap((patients) => this.patientService.mapPatientsWithPatIds(patients))
+    ).subscribe({
+      next: (patientsWithPatIds) => {
+        this.patients = patientsWithPatIds;
+        console.log('Patients with patId: ', this.patients);
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to load patients. Please try again later.';
+        console.error(this.errorMessage, err);
+      }
     });
   }
 
@@ -31,16 +42,28 @@ export class PatientsComponent {
   }
 
   deletePatient(id: number) {
-    this.patientService.deletePatient(id).subscribe(() => {
-      console.log('Patient deleted successfully!');
-      this.loadPatients();
+    this.patientService.deletePatient(id).subscribe({
+      next: () => {
+        console.log('Patient deleted successfully!');
+        this.loadPatients();
+      },
+      error: (err) => {
+        console.error('Failed to delete patient.', err);
+      }
     });
   }
 
-  viewNotes(patientId: string) {
-    this.selectedPatientId = patientId;
-    this.notesService.getNotesByPatientId(patientId).subscribe((notes) => {
-      this.selectedPatientNotes = notes;
+  viewNotes(patientPatId: string) {
+    console.log('View notes called for Patient ID: ', patientPatId);
+    this.selectedPatientId = patientPatId;
+    this.notesService.getNotesByPatientId(patientPatId).subscribe({
+      next: (notes) => {
+        console.log('Notes retrieved: ', notes);
+        this.selectedPatientNotes = notes;
+      },
+      error: (err) => {
+        console.error('Failed to load notes for patient.', err);
+      }
     });
   }
 
@@ -55,9 +78,14 @@ export class PatientsComponent {
       note: this.newNoteContent,
     };
 
-    this.notesService.addNote(newNote).subscribe(() => {
+    this.notesService.addNote(newNote).subscribe({
+      next: () => {
       this.viewNotes(this.selectedPatientId);
       this.newNoteContent = '';
+      },
+      error: (err) => {
+        console.error('Failed to add note.', err);
+      }
     });
   }
 }

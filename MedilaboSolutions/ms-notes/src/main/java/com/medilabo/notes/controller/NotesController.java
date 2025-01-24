@@ -42,9 +42,10 @@ public class NotesController {
 	 * @param patientId
 	 * @return List of notes
 	 */
-	@GetMapping("/{patientId}")
-	public ResponseEntity<List<Notes>> getNotesByPatientId(@PathVariable String patientId) {
-		List<Notes> notesList = notesService.getNotesByPatientId(patientId);
+	@GetMapping("/{patId}")
+	public ResponseEntity<List<Notes>> getNotesByPatientId(@PathVariable String patId) {
+		System.out.println("Fetching notes for patId: " + patId);
+		List<Notes> notesList = notesService.getNotesByPatientId(patId);
 		return ResponseEntity.ok(notesList);
 	}
 	

@@ -11,7 +11,8 @@ import { Observable } from 'rxjs';
     constructor(private http: HttpClient) {}
 
     getNotesByPatientId(patientId: string): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl} /${patientId}`);
+      console.log(`Fetching notes for patientId: ${patientId}`);
+        return this.http.get<any[]>(`${this.apiUrl}/${patientId}`);
     }
 
     addNote(note:any): Observable<any> {

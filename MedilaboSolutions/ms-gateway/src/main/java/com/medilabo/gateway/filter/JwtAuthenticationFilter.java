@@ -25,6 +25,7 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
 		
 			System.out.println("Authorization" + authHeader);
 			if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+				exchange.getResponse().getHeaders().add("Cache-Control",  "no-store, no-cache, must-revalidate, proxy-revalidate");
 				exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 				return exchange.getResponse().setComplete();
 			}
@@ -38,9 +39,11 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
 						exchange.getRequest().mutate()
 								.header("X-Authenticated-user", subject)
 								.build();
+						exchange.getResponse().getHeaders().add("Cache-Control",  "no-store, no-cache, must-revalidate, proxy-revalidate");
 						return chain.filter(exchange);
 					})
 					.onErrorResume(e -> {
+						exchange.getResponse().getHeaders().add("Cache-Control",  "no-store, no-cache, must-revalidate, proxy-revalidate");
 						exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 						return exchange.getResponse().setComplete();
 					});

@@ -1,5 +1,7 @@
 package com.medilabo.MedilaboSolutions.service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,9 +22,21 @@ public class PatientService {
 		this.patientRepository = patientRepository;
 	}
 	
+	// Calculate patient's age
+	public int calculateAge(LocalDate birthDate) {
+		if(birthDate == null) {
+			return 0;
+		}
+		return Period.between(birthDate, LocalDate.now()).getYears();
+	}
+	
 	//Get all patients
 	public List<Patient> getAllPatients() {
-		return patientRepository.findAll();
+		List<Patient> patients = patientRepository.findAll();
+		patients.forEach(patient -> {
+			patient.setAge(calculateAge(patient.getDateOfBirth()));
+		});
+		return patients;
 	}
 	
 	//Get patient by id

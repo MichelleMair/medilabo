@@ -11,10 +11,10 @@
     <tbody>
         <tr *ngFor="let patient of patients">
             <td>{{ patient.id }}</td>
-            <td>{{ patient.name }}</td>
+            <td>{{ patient.lastName }}  {{ patient.firstName}}</td>
             <td>{{ patient.age }}</td>
             <td>
-                <button (click)="viewNotes(patient.id)">View notes</button>
+                <button (click)="viewNotes(patient.patId)">View notes</button>
                 <button (click)="editPatient(patient)">Edit</button>
                 <button (click)="deletePatient(patient.id)">Delete</button>
             </td>
@@ -22,13 +22,16 @@
     </tbody>
 </table>
 
-<div *ngIf="selectedPatientNotes">
+<div *ngIf="selectedPatientNotes && selectedPatientNotes.length > 0">
     <h2>Notes for Patient {{ selectedPatientId }}</h2>
     <ul>
         <li *ngFor="let note of selectedPatientNotes">
             {{note.note}}
         </li>
     </ul>
+    <div *ngIf="!selectedPatientNotes || selectedPatientNotes.length == 0">
+        <p>No notes found for this patient</p>
+    </div>
     <h3>Add a new note</h3>
     <textarea [(ngModel)]="newNoteContent"></textarea>
     <button (click)="addNote()">Add note</button>

@@ -12,6 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${token}`,
+                    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
                 },
             });
         }

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable , forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { NotesService } from './notes.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +10,7 @@ import { Observable } from 'rxjs';
 export class PatientService {
   private apiUrl = 'http://localhost:8082/api/patients';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private notesService: NotesService) { }
 
   getPatients(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
@@ -24,6 +26,24 @@ export class PatientService {
 
   deletePatient(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+  //map patients data (cluster: patients) with patId in notes' cluster
+  mapPatientsWithPatIds(patients: any[]): Observable<any[]> {
+    return forkJoin(
+      patients.map((patient) =>
+        this.notesService.getNotesByPatientId(patient.id).pipe(
+          map((notes: any[]) => {
+            const transformedPatient = {
+              ...patient, 
+              patId: notes.length> 0 ? notes[0].patId : null,
+            };
+            console.log('Transformed patient: ', transformedPatient);
+            return transformedPatient
+          })
+        )
+      )
+    );
   }
 
 }

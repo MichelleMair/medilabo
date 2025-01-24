@@ -256,7 +256,8 @@ let AuthInterceptor = /*#__PURE__*/(() => {
         //Ajouter le token à l'en-tête Authorization
         request = request.clone({
           setHeaders: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
           }
         });
       }
@@ -403,12 +404,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   PatientsComponent: () => (/* binding */ PatientsComponent)
 /* harmony export */ });
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 6647);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 7580);
 /* harmony import */ var _services_patient_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/patient.service */ 3711);
 /* harmony import */ var _services_notes_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/notes.service */ 907);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ 5072);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 316);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ 4456);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 5072);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ 316);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/forms */ 4456);
+
 
 
 
@@ -432,7 +435,7 @@ function PatientsComponent_tr_14_Template(rf, ctx) {
       const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r4);
       const patient_r2 = restoredCtx.$implicit;
       const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r3.viewNotes(patient_r2.id));
+      return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r3.viewNotes(patient_r2.patId));
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](9, "View notes");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -460,7 +463,7 @@ function PatientsComponent_tr_14_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](patient_r2.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](patient_r2.name);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate2"]("", patient_r2.lastName, " ", patient_r2.firstName, "");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](patient_r2.age);
   }
@@ -472,37 +475,45 @@ function PatientsComponent_div_15_li_4_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
-    const note_r8 = ctx.$implicit;
+    const note_r9 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", note_r8.note, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", note_r9.note, " ");
+  }
+}
+function PatientsComponent_div_15_div_5_Template(rf, ctx) {
+  if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div")(1, "p");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2, "No notes found for this patient");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
   }
 }
 function PatientsComponent_div_15_Template(rf, ctx) {
   if (rf & 1) {
-    const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    const _r11 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div")(1, "h2");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "ul");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](4, PatientsComponent_div_15_li_4_Template, 2, 1, "li", 1);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "h3");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](6, "Add a new note");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](5, PatientsComponent_div_15_div_5_Template, 3, 0, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "h3");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](7, "Add a new note");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "textarea", 4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function PatientsComponent_div_15_Template_textarea_ngModelChange_7_listener($event) {
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r10);
-      const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r9.newNoteContent = $event);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "textarea", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function PatientsComponent_div_15_Template_textarea_ngModelChange_8_listener($event) {
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r11);
+      const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+      return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r10.newNoteContent = $event);
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "button", 3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_div_15_Template_button_click_8_listener() {
-      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r10);
-      const ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
-      return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r11.addNote());
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "button", 3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_div_15_Template_button_click_9_listener() {
+      _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r11);
+      const ctx_r12 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+      return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r12.addNote());
     });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](9, "Add note");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](10, "Add note");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
   }
   if (rf & 2) {
@@ -511,6 +522,8 @@ function PatientsComponent_div_15_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"]("Notes for Patient ", ctx_r1.selectedPatientId, "");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r1.selectedPatientNotes);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", !ctx_r1.selectedPatientNotes || ctx_r1.selectedPatientNotes.length == 0);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r1.newNoteContent);
   }
@@ -524,6 +537,7 @@ let PatientsComponent = /*#__PURE__*/(() => {
     selectedPatientNotes = null;
     selectedPatientId = '';
     newNoteContent = '';
+    errorMessage = '';
     constructor(patientService, notesService, router) {
       this.patientService = patientService;
       this.notesService = notesService;
@@ -533,8 +547,15 @@ let PatientsComponent = /*#__PURE__*/(() => {
       this.loadPatients();
     }
     loadPatients() {
-      this.patientService.getPatients().subscribe(data => {
-        this.patients = data;
+      this.patientService.getPatients().pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.switchMap)(patients => this.patientService.mapPatientsWithPatIds(patients))).subscribe({
+        next: patientsWithPatIds => {
+          this.patients = patientsWithPatIds;
+          console.log('Patients with patId: ', this.patients);
+        },
+        error: err => {
+          this.errorMessage = 'Failed to load patients. Please try again later.';
+          console.error(this.errorMessage, err);
+        }
       });
     }
     editPatient(patient) {
@@ -546,15 +567,27 @@ let PatientsComponent = /*#__PURE__*/(() => {
     }
 
     deletePatient(id) {
-      this.patientService.deletePatient(id).subscribe(() => {
-        console.log('Patient deleted successfully!');
-        this.loadPatients();
+      this.patientService.deletePatient(id).subscribe({
+        next: () => {
+          console.log('Patient deleted successfully!');
+          this.loadPatients();
+        },
+        error: err => {
+          console.error('Failed to delete patient.', err);
+        }
       });
     }
-    viewNotes(patientId) {
-      this.selectedPatientId = patientId;
-      this.notesService.getNotesByPatientId(patientId).subscribe(notes => {
-        this.selectedPatientNotes = notes;
+    viewNotes(patientPatId) {
+      console.log('View notes called for Patient ID: ', patientPatId);
+      this.selectedPatientId = patientPatId;
+      this.notesService.getNotesByPatientId(patientPatId).subscribe({
+        next: notes => {
+          console.log('Notes retrieved: ', notes);
+          this.selectedPatientNotes = notes;
+        },
+        error: err => {
+          console.error('Failed to load notes for patient.', err);
+        }
       });
     }
     addNote() {
@@ -567,13 +600,18 @@ let PatientsComponent = /*#__PURE__*/(() => {
         patient: '',
         note: this.newNoteContent
       };
-      this.notesService.addNote(newNote).subscribe(() => {
-        this.viewNotes(this.selectedPatientId);
-        this.newNoteContent = '';
+      this.notesService.addNote(newNote).subscribe({
+        next: () => {
+          this.viewNotes(this.selectedPatientId);
+          this.newNoteContent = '';
+        },
+        error: err => {
+          console.error('Failed to add note.', err);
+        }
       });
     }
     static ɵfac = function PatientsComponent_Factory(t) {
-      return new (t || PatientsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_patient_service__WEBPACK_IMPORTED_MODULE_0__.PatientService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_notes_service__WEBPACK_IMPORTED_MODULE_1__.NotesService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__.Router));
+      return new (t || PatientsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_patient_service__WEBPACK_IMPORTED_MODULE_0__.PatientService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_notes_service__WEBPACK_IMPORTED_MODULE_1__.NotesService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__.Router));
     };
     static ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({
       type: PatientsComponent,
@@ -599,18 +637,18 @@ let PatientsComponent = /*#__PURE__*/(() => {
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](12, "Actions");
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()();
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "tbody");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](14, PatientsComponent_tr_14_Template, 14, 3, "tr", 1);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](14, PatientsComponent_tr_14_Template, 14, 4, "tr", 1);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](15, PatientsComponent_div_15_Template, 10, 3, "div", 2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](15, PatientsComponent_div_15_Template, 11, 4, "div", 2);
         }
         if (rf & 2) {
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](14);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.patients);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.selectedPatientNotes);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.selectedPatientNotes && ctx.selectedPatientNotes.length > 0);
         }
       },
-      dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_4__.NgIf, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgModel],
+      dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgIf, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.NgModel],
       styles: ["/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsInNvdXJjZVJvb3QiOiIifQ== */"]
     });
   }
@@ -641,7 +679,8 @@ let NotesService = /*#__PURE__*/(() => {
       this.http = http;
     }
     getNotesByPatientId(patientId) {
-      return this.http.get(`${this.apiUrl} /${patientId}`);
+      console.log(`Fetching notes for patientId: ${patientId}`);
+      return this.http.get(`${this.apiUrl}/${patientId}`);
     }
     addNote(note) {
       return this.http.post(this.apiUrl, note);
@@ -670,16 +709,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   PatientService: () => (/* binding */ PatientService)
 /* harmony export */ });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ 7580);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ 6443);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 1873);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ 271);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 7580);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 6443);
+/* harmony import */ var _notes_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notes.service */ 907);
+
+
+
 
 
 let PatientService = /*#__PURE__*/(() => {
   class PatientService {
     http;
+    notesService;
     apiUrl = 'http://localhost:8082/api/patients';
-    constructor(http) {
+    constructor(http, notesService) {
       this.http = http;
+      this.notesService = notesService;
     }
     getPatients() {
       return this.http.get(`${this.apiUrl}`);
@@ -693,10 +740,21 @@ let PatientService = /*#__PURE__*/(() => {
     deletePatient(id) {
       return this.http.delete(`${this.apiUrl}/${id}`);
     }
+    //map patients data (cluster: patients) with patId in notes' cluster
+    mapPatientsWithPatIds(patients) {
+      return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.forkJoin)(patients.map(patient => this.notesService.getNotesByPatientId(patient.id).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)(notes => {
+        const transformedPatient = {
+          ...patient,
+          patId: notes.length > 0 ? notes[0].patId : null
+        };
+        console.log('Transformed patient: ', transformedPatient);
+        return transformedPatient;
+      }))));
+    }
     static ɵfac = function PatientService_Factory(t) {
-      return new (t || PatientService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__.HttpClient));
+      return new (t || PatientService)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpClient), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_notes_service__WEBPACK_IMPORTED_MODULE_0__.NotesService));
     };
-    static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
+    static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjectable"]({
       token: PatientService,
       factory: PatientService.ɵfac,
       providedIn: 'root'
