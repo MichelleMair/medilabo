@@ -41,7 +41,7 @@ public class Patient {
 	
 	private String address;
 	
-	@Pattern(regexp= "^\\+?[0-9\\-\\s]+$", message= "Phone number must be valid")
+	@Pattern(regexp= "^\\+?[0-9\\-\\s]+)?$", message= "Phone number must be valid")
 	private String phoneNumber;
 	
 	private int patId;

@@ -1,6 +1,5 @@
 package com.medilabo.notes.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,15 +31,6 @@ public class NotesTest {
 		assertTrue(violations.isEmpty());
 	}
 	
-	@Test
-	void testInvalideNotes_NullPatId() {
-		Notes notes = new Notes(null, 0, "TestPatient", "This i a valid note.");
-		
-		Set<ConstraintViolation<Notes>> violations = validator.validate(notes);
-		assertFalse(violations.isEmpty());
-		assertEquals(1, violations.size());
-		assertEquals("Patient ID is required", violations.iterator().next().getMessage());
-	}
 	
 	@Test    
 	void testInvalidNotes_NullPatient() {

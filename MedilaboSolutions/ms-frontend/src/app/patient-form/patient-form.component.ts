@@ -45,8 +45,8 @@ export class PatientFormComponent implements OnInit{
   }
 
   savePatient() {
-    if (!this.patient.firstName || !this.patient.lastName || !this.patient.dateOfBirth || !this.patient.gender || !this.patient.address || !this.patient.phoneNumber) {
-      alert('All fields are required.');
+    if (!this.patient.firstName || !this.patient.lastName || !this.patient.dateOfBirth || !this.patient.gender) {
+      alert('First name, Last name, Birthdate and Gender are required.');
       return;
     }
 
