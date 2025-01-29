@@ -34,21 +34,21 @@ public class NotesServiceTest {
 	@Test
 	void testGetAllNotesByPatientId() {
 		List<Notes> notesList = Arrays.asList(
-				new Notes("1","1","TestPatient", "First note."),
-				new Notes("2","1","TestPatient", "Second note.")
+				new Notes("1", 1,"TestPatient", "First note."),
+				new Notes("2", 1,"TestPatient", "Second note.")
 		);
 		
-		when(notesRepository.findByPatId("1")).thenReturn(notesList);
+		when(notesRepository.findByPatId(1)).thenReturn(notesList);
 		
-		List<Notes> result = notesService.getNotesByPatientId("1");
+		List<Notes> result = notesService.getNotesByPatientId(1);
 		assertEquals(2, result.size());
 		assertEquals("First note.", result.get(0).getNote());
-		verify(notesRepository, times(1)).findByPatId("1");
+		verify(notesRepository, times(1)).findByPatId(1);
 	}
 	
 	@Test
 	void testAddNote() {
-		Notes note = new Notes("1","1","TestPatient", "New medical note.");
+		Notes note = new Notes("1", 1,"TestPatient", "New medical note.");
 		when(notesRepository.save(note)).thenReturn(note);
 		
 		Notes result = notesService.addNote(note);
@@ -58,8 +58,8 @@ public class NotesServiceTest {
 	
 	@Test
 	void testUpdateNote() {
-		Notes existingNote = new Notes("1","1","TestPatient", "Old note.");
-		Notes updatedNote = new Notes("1","1","TestPatient", "Updated note.");
+		Notes existingNote = new Notes("1", 1,"TestPatient", "Old note.");
+		Notes updatedNote = new Notes("1", 1,"TestPatient", "Updated note.");
 		
 		when(notesRepository.findById("1")).thenReturn(Optional.of(existingNote));
 		when(notesRepository.save(updatedNote)).thenReturn(updatedNote);
@@ -71,7 +71,7 @@ public class NotesServiceTest {
 	
 	@Test
 	void testUpdateNote_NotFound() {
-		Notes updatedNote = new Notes("1","1","TestPatient", "Updated note.");
+		Notes updatedNote = new Notes("1", 1,"TestPatient", "Updated note.");
 		when(notesRepository.findById("1")).thenReturn(Optional.empty());
 		
 		assertThrows(RuntimeException.class, () -> notesService.updateNote("1", updatedNote));
@@ -79,7 +79,7 @@ public class NotesServiceTest {
 	
 	@Test
 	void testDeleteNote() {
-		Notes existingNote = new Notes("1","1","TestPatient", "Medical note to delete.");
+		Notes existingNote = new Notes("1", 1,"TestPatient", "Medical note to delete.");
 		
 		when(notesRepository.findById("1")).thenReturn(Optional.of(existingNote));
 		

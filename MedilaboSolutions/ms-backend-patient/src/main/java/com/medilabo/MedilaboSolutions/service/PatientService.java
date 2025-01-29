@@ -6,10 +6,16 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
 import com.medilabo.MedilaboSolutions.model.Patient;
+import com.medilabo.MedilaboSolutions.model.SequenceCounter;
 import com.medilabo.MedilaboSolutions.repository.PatientRepository;
 
 @Service
@@ -17,9 +23,22 @@ public class PatientService {
 	
 	private final PatientRepository patientRepository;
 	private static final Logger logger = LoggerFactory.getLogger(PatientService.class);
+	private final MongoOperations mongoOperations;
 	
-	public PatientService(PatientRepository patientRepository) {
+	public PatientService(PatientRepository patientRepository, MongoOperations mongoOperations) {
 		this.patientRepository = patientRepository;
+		this.mongoOperations = mongoOperations;
+	}
+	
+	
+	//Generate custom increment ID
+	public int getNextSequenceValue(String sequenceName) {
+		Query query = new Query(Criteria.where("_id").is(sequenceName));
+		Update update = new Update().inc("sequenceValue", 1);
+		FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
+		SequenceCounter counter = mongoOperations.findAndModify(query,  update,  options, SequenceCounter.class);
+		
+		return counter != null ? counter.getSequenceValue() : 1;
 	}
 	
 	// Calculate patient's age
@@ -54,7 +73,8 @@ public class PatientService {
 		if (exists) {
 			throw new IllegalArgumentException("A patient with the same name and date of birth already exists.");
 		}
-		
+		// Generate custom ID for the patient
+		patient.setPatId(getNextSequenceValue("patients"));
 		logger.info("Adding patient : {}", patient);
 		return patientRepository.save(patient);
 	}

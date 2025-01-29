@@ -16,17 +16,24 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-//import org.springframework.test.context.ActiveProfiles;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
 import com.medilabo.MedilaboSolutions.model.Patient;
+import com.medilabo.MedilaboSolutions.model.SequenceCounter;
 import com.medilabo.MedilaboSolutions.repository.PatientRepository;
 
-//@ActiveProfiles("test")
+
 public class PatientServiceTest {
 
 	@Mock
 	private PatientRepository patientRepository;
+	
+	@Mock
+	private MongoOperations mongoOperations;
 	
 	@InjectMocks
 	private PatientService patientService;
@@ -65,6 +72,13 @@ public class PatientServiceTest {
 	
 	@Test
 	void testAddPatient() {
+		when(mongoOperations.findAndModify(
+				ArgumentMatchers.any(Query.class), 
+				ArgumentMatchers.any(Update.class), 
+				ArgumentMatchers.any(FindAndModifyOptions.class),
+				ArgumentMatchers.eq(SequenceCounter.class)))
+				.thenReturn(new SequenceCounter("patients", 1));
+		
 		when(patientRepository.save(ArgumentMatchers.any(Patient.class))).thenReturn(testPatient);
 		
 		Patient result = patientService.addPatient(testPatient);

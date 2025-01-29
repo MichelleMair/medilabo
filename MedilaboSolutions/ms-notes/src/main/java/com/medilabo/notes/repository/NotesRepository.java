@@ -15,5 +15,5 @@ public interface NotesRepository extends MongoRepository<Notes, String> {
 	 * @param patientId
 	 * @return list of notes
 	 */
-	List<Notes> findByPatId(String patId);
+	List<Notes> findByPatId(int patId);
 }

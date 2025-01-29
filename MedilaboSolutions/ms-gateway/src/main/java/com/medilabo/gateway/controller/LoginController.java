@@ -1,6 +1,7 @@
 package com.medilabo.gateway.controller;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -48,14 +49,17 @@ public class LoginController {
 		
 		if (username.equals(providedUsername) && passwordEncoder.matches(providedPassword, password)) {
 			logger.info("Authentification réussie pour: {} ", providedUsername);
-			
+
 			Instant now = Instant.now();
+			
+			String role = "user".equals(providedUsername) ? "USER" : "ADMIN";
+			
 			JwtClaimsSet claims = JwtClaimsSet.builder()
 					.issuer("MedilaboSolutions")
 					.issuedAt(now)
 					.expiresAt(now.plusSeconds(3600)) //1h
 					.subject(providedUsername)
-					.claim("roles", "USER")
+					.claim("roles", List.of(role))
 					.build();
 			
 			System.out.println("Claims: " + claims);
@@ -65,7 +69,9 @@ public class LoginController {
 			String token = this.jwtEncoder.encode(parameters).getTokenValue();
 			logger.info("Token JWT généré: {}", token);
 			
-			return Map.of("token", token);
+			return Map.of(
+					"token", token,
+					"role", role);
 		}
 		logger.info("Echec de l'authentification pour l'utilisateur: {} ", providedUsername);
 		throw new RuntimeException("Invalid username or password");

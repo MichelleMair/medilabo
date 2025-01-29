@@ -38,12 +38,12 @@ public class NotesControllerTest {
 	
 	@BeforeEach
 	void setUp() {
-		note = new Notes("1","1","TestPatient", "Medical note.");
+		note = new Notes("1",1,"TestPatient", "Medical note.");
 	}
 	
 	@Test
 	void testGetNotesByPatientId() throws Exception {
-		when(notesService.getNotesByPatientId("1")).thenReturn(Arrays.asList(note));
+		when(notesService.getNotesByPatientId(1)).thenReturn(Arrays.asList(note));
 		
 		mockMvc.perform(get("/api/notes/1"))
 				.andExpect(status().isOk())

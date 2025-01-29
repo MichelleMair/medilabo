@@ -26,7 +26,7 @@ public class NotesTest {
 	
 	@Test
 	void testValideNotes() {
-		Notes notes = new Notes("1","2","TestPatient", "This i a valid note.");
+		Notes notes = new Notes("1",2,"TestPatient", "This i a valid note.");
 		
 		Set<ConstraintViolation<Notes>> violations = validator.validate(notes);
 		assertTrue(violations.isEmpty());
@@ -34,7 +34,7 @@ public class NotesTest {
 	
 	@Test
 	void testInvalideNotes_NullPatId() {
-		Notes notes = new Notes(null, null, "TestPatient", "This i a valid note.");
+		Notes notes = new Notes(null, 0, "TestPatient", "This i a valid note.");
 		
 		Set<ConstraintViolation<Notes>> violations = validator.validate(notes);
 		assertFalse(violations.isEmpty());
@@ -44,7 +44,7 @@ public class NotesTest {
 	
 	@Test    
 	void testInvalidNotes_NullPatient() {
-		Notes notes = new Notes("1","2", null, "This i a valid note.");
+		Notes notes = new Notes("1",2, null, "This i a valid note.");
 		
 		Set<ConstraintViolation<Notes>> violations = validator.validate(notes);
 		assertFalse(violations.isEmpty());
@@ -52,7 +52,7 @@ public class NotesTest {
 	
 	@Test
 	void testInvalidNotes_NullNote() {
-		Notes notes = new Notes("1","2","TestPatient", null);
+		Notes notes = new Notes("1", 2,"TestPatient", null);
 		
 		Set<ConstraintViolation<Notes>> violations = validator.validate(notes);
 		assertFalse(violations.isEmpty());

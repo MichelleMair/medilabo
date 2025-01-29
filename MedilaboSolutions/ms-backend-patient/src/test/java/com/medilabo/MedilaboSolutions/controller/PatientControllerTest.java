@@ -22,14 +22,20 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.medilabo.MedilaboSolutions.config.test.TestSecurityConfig;
 import com.medilabo.MedilaboSolutions.model.Patient;
 import com.medilabo.MedilaboSolutions.service.PatientService;
 
+@Import(TestSecurityConfig.class)
 @WebMvcTest(controllers = PatientController.class)
+@ActiveProfiles("test")
 public class PatientControllerTest {
 
 	@Autowired
@@ -55,6 +61,7 @@ public class PatientControllerTest {
 	
 	@Test
 	@DisplayName("Get all patients should return a list of patients")
+	@WithMockUser(username= "user", roles= {"USER"})
 	void testGetAllPatients() throws Exception {
 		when(patientService.getAllPatients()).thenReturn(patients);
 		
@@ -68,6 +75,7 @@ public class PatientControllerTest {
 	
 	@Test
 	@DisplayName("Get patient by ID should return the patient")
+	@WithMockUser(username= "user", roles= {"USER"})
 	void testGetPatientById() throws Exception {
 		
 		when(patientService.getPatientById("1")).thenReturn(patient1);
@@ -82,6 +90,7 @@ public class PatientControllerTest {
 	
 	@Test
 	@DisplayName("Add new patient shoudl return the created patient")
+	@WithMockUser(username= "admin", roles= {"ADMIN"})
 	void testAddPatient() throws Exception {
 		when(patientService.addPatient(Mockito.any(Patient.class))).thenReturn(patient1);
 		
@@ -96,6 +105,7 @@ public class PatientControllerTest {
 	
 	@Test
 	@DisplayName("Update patient should return the updated patient")
+	@WithMockUser(username= "admin", roles= {"ADMIN"})
 	void testUpdatePatient() throws Exception {
 
 		when(patientService.updatePatient(eq("1"), Mockito.any(Patient.class))).thenReturn(patient2);
@@ -112,6 +122,7 @@ public class PatientControllerTest {
 	
 	@Test
 	@DisplayName("Delete patient should return no content")
+	@WithMockUser(username= "admin", roles= {"ADMIN"})
 	void testDeletePatient() throws Exception{
 		
 		doNothing().when(patientService).deletePatient("1");

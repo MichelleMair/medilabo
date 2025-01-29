@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -70,6 +71,7 @@ public class SecurityConfig {
 	public Converter<Jwt, Mono<AbstractAuthenticationToken>> jwtAuthenticationConverter() {
 		return jwt -> {
 			Collection<GrantedAuthority> authorities = jwt.getClaimAsStringList("roles").stream()
+					.map(role -> "ROLE_" + role)
 					.map(SimpleGrantedAuthority::new)
 					.collect(Collectors.toList());
 			return Mono.just(new JwtAuthenticationToken(jwt, authorities));
@@ -79,11 +81,13 @@ public class SecurityConfig {
 	@Bean
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 		http.authorizeExchange(exchanges -> exchanges
-				.pathMatchers("/api/auth").permitAll()
+				.pathMatchers("/api/auth/**").permitAll()
+				.pathMatchers("/api/patients/**", "/api/notes/**").hasAnyRole("USER", "ADMIN")
 				.anyExchange().authenticated())
 			.csrf(ServerHttpSecurity.CsrfSpec::disable)
 			.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-			.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+			.addFilterAt(new LogJWTFilter(), SecurityWebFiltersOrder.AUTHENTICATION);
 		
 		return http.build();
 	}
@@ -94,6 +98,11 @@ public class SecurityConfig {
 					.password(passwordEncoder.encode("password"))
 					.roles("USER")
 					.build();
+		UserDetails admin = User.withUsername("admin")
+				.password(passwordEncoder.encode("password"))
+				.roles("ADMIN")
+				.build();		
+		
 		return new MapReactiveUserDetailsService(user);
 	}
 	
@@ -111,7 +120,6 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.addExposedHeader("Authorization");
-        configuration.addExposedHeader("Cache-Control");
         configuration.setAllowCredentials(true);
 		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable , forkJoin } from 'rxjs';
+import { Observable , forkJoin, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NotesService } from './notes.service';
 
@@ -13,7 +13,36 @@ export class PatientService {
   constructor(private http: HttpClient, private notesService: NotesService) { }
 
   getPatients(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("Aucun token trouvé!");
+      return throwError(() => new Error("Utilisateur non authentifié"));
+    }
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<any[]>(`${this.apiUrl}`, { headers }).pipe(
+      map(patients => {
+          console.log("Réponse brute de l'API(patient.service.ts): ", patients);
+          return patients.map(p => ({
+          id: p.id,
+          firstName: p.firstName,
+          lastName: p.lastName,
+          age: p.age,
+          dateOfBirth: p.dateOfBirth,
+          patId: p.patId
+        }));
+      })
+    );
+  }
+
+  getPatientById(id: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("Aucun token trouvé.");
+      return throwError(() => new Error("Utilisateur non authentifié."));
+    }
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
   }
 
   addPatient(patient: any): Observable<any> {
@@ -32,15 +61,11 @@ export class PatientService {
   mapPatientsWithPatIds(patients: any[]): Observable<any[]> {
     return forkJoin(
       patients.map((patient) =>
-        this.notesService.getNotesByPatientId(patient.id).pipe(
-          map((notes: any[]) => {
-            const transformedPatient = {
+        this.notesService.getNotesByPatientId(patient.patId).pipe(
+          map((notes: any[]) => ({
               ...patient, 
-              patId: notes.length> 0 ? notes[0].patId : null,
-            };
-            console.log('Transformed patient: ', transformedPatient);
-            return transformedPatient
-          })
+              notesCount: notes.length,
+          }))
         )
       )
     );

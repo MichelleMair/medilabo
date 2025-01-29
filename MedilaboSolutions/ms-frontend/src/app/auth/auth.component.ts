@@ -17,8 +17,21 @@ export class AuthComponent {
     this.http.post<any>('http://localhost:8082/api/auth', this.credentials).subscribe({
       next: (response) => {
         console.log('Login successful', response);
+
+        if(response.token) {
         //Stocker le token JWT dans le localStorage
         localStorage.setItem('token', response.token);
+        console.log("Token en localStorage : ", localStorage.getItem('token'));
+        } else {
+          console.error("Aucun token reçu.");
+        }
+
+        if (response.role) {
+          localStorage.setItem('role', response.role);
+          console.log("Rôle stocké dans localStorage: " , response.role) //Stocker le role de l'user
+        }
+
+        console.log("Redirecting to /patients...");
         this.router.navigate(['/patients']);
       },
       error: (err) => {

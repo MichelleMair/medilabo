@@ -44,6 +44,8 @@ public class Patient {
 	@Pattern(regexp= "^\\+?[0-9\\-\\s]+$", message= "Phone number must be valid")
 	private String phoneNumber;
 	
+	private int patId;
+	
 	public Patient(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String address, String phoneNumber) {
 		this.id = id;
 		this.firstName = firstName;
@@ -52,6 +54,17 @@ public class Patient {
 		this.gender = gender;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+	}
+	
+	public Patient(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String address, String phoneNumber, int patId) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.patId = patId;
 	}
 	
 }

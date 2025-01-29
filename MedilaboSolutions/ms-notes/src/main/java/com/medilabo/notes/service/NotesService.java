@@ -23,7 +23,7 @@ public class NotesService {
 	}
 
 	// Get notes with patientID
-	public List<Notes> getNotesByPatientId(String patId) {
+	public List<Notes> getNotesByPatientId(int patId) {
 		return notesRepository.findByPatId(patId);
 	}
 	

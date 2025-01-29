@@ -18,7 +18,7 @@ public class Notes {
 	private String id;
 	
 	@NotNull(message= "Patient ID is required")
-	private String patId;
+	private int patId;
 	
 	@NotNull(message= "Patient name is required")
 	private String patient;
