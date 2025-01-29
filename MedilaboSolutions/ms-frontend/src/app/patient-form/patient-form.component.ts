@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PatientService } from '../services/patient.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Patient } from '../models/patient.model';
 
 @Component({
   selector: 'app-patient-form',
@@ -8,7 +9,15 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./patient-form.component.css']
 })
 export class PatientFormComponent implements OnInit{
-  patient = { id: null, firstName: '', lastName: '', dateOfBirth: '', gender:'', address:'', phoneNumber: '', patId: 0 };
+  patient: Patient = { 
+    id: null, 
+    firstName: '', 
+    lastName: '', 
+    dateOfBirth: new Date(),
+    gender:'', 
+    address:'', 
+    phoneNumber: '',
+  };
 
   constructor(
     private patientService: PatientService,
@@ -23,6 +32,7 @@ export class PatientFormComponent implements OnInit{
         this.patientService.getPatientById(params['id']).subscribe({
           next: (data) => {
             if (data) {
+              data.dateOfBirth = new Date(data.dateOfBirth).toISOString().split('T')[0];
               this.patient = data;
             } else {
               console.error("Patient not found for ID: ", params['id']);
@@ -46,7 +56,8 @@ export class PatientFormComponent implements OnInit{
         this.router.navigate(['/patients']);
       });
     } else {
-      this.patient.patId = Math.floor(Math.random() * 10000);
+      //Modifier la valeur du patId initialisé à zéro pour laisser le ms-backend-patient généré le patId auto-incrémenté
+      this.patient = {...this.patient, patId: undefined };
       this.patientService.addPatient(this.patient).subscribe(() => {
         console.log('Patient added successfully.');
         this.router.navigate(['/patients']);

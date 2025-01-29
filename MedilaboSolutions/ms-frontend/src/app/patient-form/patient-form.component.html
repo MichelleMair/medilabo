@@ -1,10 +1,44 @@
-<h1>{{ patient.id ? 'Update Patient' : 'Add Patient' }}</h1>
-<form (ngSubmit)="savePatient()">
-    <label for="name">Name:</label>
-    <input id="name" type="text" [(ngModel)]="patient.name" name="name" required/>
+<h1>{{ patient.id ? 'Update Patient' : 'Add New Patient' }}</h1>
 
-    <label for="age">Age:</label>
-    <input id="age" type="number" [(ngModel)]="patient.age" name="age" required/>
 
-    <button type="submit"> {{ patient.id ? 'Update' : 'Save' }}</button>
+<form (ngSubmit)="savePatient()" class="patient-form">
+
+    <div class="form-group">
+        <label for="firstName">First name:</label>
+        <input id="firstName" type="text" [(ngModel)]="patient.firstName" name="firstName" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="lastName">Last name:</label>
+        <input id="lastName" type="text" [(ngModel)]="patient.lastName" name="lastName" required/>
+
+    </div>
+
+    <div class="form-group">
+        <label for="dateOfBirth">Birthdate:</label>
+        <input id="dateOfBirth" type="date" [(ngModel)]="patient.dateOfBirth" name="dateOfBirth" required/>
+
+    </div>
+
+    <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender" [(ngModel)]="patient.gender" name="gender" required>
+            <option value="" disabled selected>Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="address">Address:</label>
+        <input id="address" type="text" [(ngModel)]="patient.address" name="address" required/>
+    </div>
+
+    <div class="form-group">
+        <label for="phoneNumber">Number phone:</label>
+        <input id="phoneNumber" type="text" [(ngModel)]="patient.phoneNumber" name="phoneNumber" required/>
+    </div>
+
+    <button type="submit" class="save-button"> {{ patient.id ? 'Update Patient' : 'Save Patient' }}</button>
 </form>

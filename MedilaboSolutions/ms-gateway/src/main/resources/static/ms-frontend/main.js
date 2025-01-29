@@ -331,9 +331,12 @@ let PatientFormComponent = /*#__PURE__*/(() => {
     router;
     patient = {
       id: null,
-      name: '',
-      age: null,
-      patId: 0
+      firstName: '',
+      lastName: '',
+      dateOfBirth: new Date(),
+      gender: '',
+      address: '',
+      phoneNumber: ''
     };
     constructor(patientService, route, router) {
       this.patientService = patientService;
@@ -344,15 +347,23 @@ let PatientFormComponent = /*#__PURE__*/(() => {
       //Check if ID is on parameters
       this.route.queryParams.subscribe(params => {
         if (params['id']) {
-          this.patientService.getPatients().subscribe(data => {
-            this.patient = data.find(p => p.id === +params['id']);
+          this.patientService.getPatientById(params['id']).subscribe({
+            next: data => {
+              if (data) {
+                data.dateOfBirth = new Date(data.dateOfBirth);
+                this.patient = data;
+              } else {
+                console.error("Patient not found for ID: ", params['id']);
+              }
+            },
+            error: err => console.error("Error fetching patient data: ", err)
           });
         }
       });
     }
     savePatient() {
-      if (!this.patient.name || !this.patient.age) {
-        console.error('Name and age are required');
+      if (!this.patient.firstName || !this.patient.lastName || !this.patient.dateOfBirth || !this.patient.gender || !this.patient.address || !this.patient.phoneNumber) {
+        alert('All fields are required.');
         return;
       }
       if (this.patient.id) {
@@ -361,6 +372,11 @@ let PatientFormComponent = /*#__PURE__*/(() => {
           this.router.navigate(['/patients']);
         });
       } else {
+        //Modifier la valeur du patId initialisé à zéro pour laisser le ms-backend-patient généré le patId auto-incrémenté
+        this.patient = {
+          ...this.patient,
+          patId: undefined
+        };
         this.patientService.addPatient(this.patient).subscribe(() => {
           console.log('Patient added successfully.');
           this.router.navigate(['/patients']);
@@ -373,9 +389,9 @@ let PatientFormComponent = /*#__PURE__*/(() => {
     static ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({
       type: PatientFormComponent,
       selectors: [["app-patient-form"]],
-      decls: 11,
-      vars: 4,
-      consts: [[3, "ngSubmit"], ["for", "name"], ["id", "name", "type", "text", "name", "name", "required", "", 3, "ngModel", "ngModelChange"], ["for", "age"], ["id", "age", "type", "number", "name", "age", "required", "", 3, "ngModel", "ngModelChange"], ["type", "submit"]],
+      decls: 37,
+      vars: 8,
+      consts: [[1, "patient-form", 3, "ngSubmit"], [1, "form-group"], ["for", "firstName"], ["id", "firstName", "type", "text", "name", "firstName", "required", "", 3, "ngModel", "ngModelChange"], ["for", "lastName"], ["id", "lastName", "type", "text", "name", "lastName", "required", "", 3, "ngModel", "ngModelChange"], ["for", "dateOfBirth"], ["id", "dateOfBirth", "type", "date", "name", "dateOfBirth", "required", "", 3, "ngModel", "ngModelChange"], ["for", "gender"], ["id", "gender", "name", "gender", "required", "", 3, "ngModel", "ngModelChange"], ["value", "", "disabled", "", "selected", ""], ["value", "Male"], ["value", "Female"], ["value", "Other"], ["for", "address"], ["id", "address", "type", "text", "name", "address", "required", "", 3, "ngModel", "ngModelChange"], ["for", "phoneNumber"], ["id", "phoneNumber", "type", "text", "name", "phoneNumber", "required", "", 3, "ngModel", "ngModelChange"], ["type", "submit", 1, "save-button"]],
       template: function PatientFormComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "h1");
@@ -385,39 +401,90 @@ let PatientFormComponent = /*#__PURE__*/(() => {
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngSubmit", function PatientFormComponent_Template_form_ngSubmit_2_listener() {
             return ctx.savePatient();
           });
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "label", 1);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](4, "Name:");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "div", 1)(4, "label", 2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](5, "First name:");
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "input", 2);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function PatientFormComponent_Template_input_ngModelChange_5_listener($event) {
-            return ctx.patient.name = $event;
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](6, "input", 3);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function PatientFormComponent_Template_input_ngModelChange_6_listener($event) {
+            return ctx.patient.firstName = $event;
           });
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](7, "div", 1)(8, "label", 4);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](9, "Last name:");
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](6, "label", 3);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](7, "Age:");
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](8, "input", 4);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function PatientFormComponent_Template_input_ngModelChange_8_listener($event) {
-            return ctx.patient.age = $event;
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](10, "input", 5);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function PatientFormComponent_Template_input_ngModelChange_10_listener($event) {
+            return ctx.patient.lastName = $event;
           });
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](11, "div", 1)(12, "label", 6);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](13, "Birthdate:");
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](9, "button", 5);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](10);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](14, "input", 7);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function PatientFormComponent_Template_input_ngModelChange_14_listener($event) {
+            return ctx.patient.dateOfBirth = $event;
+          });
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](15, "div", 1)(16, "label", 8);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](17, "Gender:");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](18, "select", 9);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function PatientFormComponent_Template_select_ngModelChange_18_listener($event) {
+            return ctx.patient.gender = $event;
+          });
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](19, "option", 10);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](20, "Select gender");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](21, "option", 11);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](22, "Male");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](23, "option", 12);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](24, "Female");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](25, "option", 13);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](26, "Other");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](27, "div", 1)(28, "label", 14);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](29, "Address:");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](30, "input", 15);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function PatientFormComponent_Template_input_ngModelChange_30_listener($event) {
+            return ctx.patient.address = $event;
+          });
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](31, "div", 1)(32, "label", 16);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](33, "Number phone:");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](34, "input", 17);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("ngModelChange", function PatientFormComponent_Template_input_ngModelChange_34_listener($event) {
+            return ctx.patient.phoneNumber = $event;
+          });
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](35, "button", 18);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](36);
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]()();
         }
         if (rf & 2) {
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.patient.id ? "Update Patient" : "Add Patient");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.patient.id ? "Update Patient" : "Add New Patient");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", ctx.patient.firstName);
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", ctx.patient.name);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](3);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", ctx.patient.age);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", ctx.patient.lastName);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", ctx.patient.dateOfBirth);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", ctx.patient.gender);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](12);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", ctx.patient.address);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngModel", ctx.patient.phoneNumber);
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate1"](" ", ctx.patient.id ? "Update" : "Save", "");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate1"](" ", ctx.patient.id ? "Update Patient" : "Save Patient", "");
         }
       },
-      dependencies: [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NumberValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.RequiredValidator, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NgModel, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NgForm],
-      styles: ["/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsInNvdXJjZVJvb3QiOiIifQ== */"]
+      dependencies: [_angular_forms__WEBPACK_IMPORTED_MODULE_3__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NgSelectOption, _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ɵNgSelectMultipleOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.SelectControlValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.RequiredValidator, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NgModel, _angular_forms__WEBPACK_IMPORTED_MODULE_3__.NgForm],
+      styles: [".patient-form[_ngcontent-%COMP%] {\n    width: 50%;\n    margin: 0 auto;\n    padding: 20px;\n    background: #f9f9f9;\n    border-radius: 8px;\n    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);\n    display: flex;\n    flex-direction: column;\n    gap: 15px;\n}\n\n.form-group[_ngcontent-%COMP%] {\n    display: flex;\n    flex-direction: column;\n}\n\n.form-group[_ngcontent-%COMP%]   label[_ngcontent-%COMP%] {\n    font-weight: bold;\n    margin-bottom: 5px;\n}\n\n.form-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%], .form-group[_ngcontent-%COMP%]   select[_ngcontent-%COMP%] {\n    padding: 8px;\n    font-size: 16px;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n}\n\n.save-button[_ngcontent-%COMP%] {\n    background-color: #007bff;\n    color: white;\n    font-size: 18px;\n    padding: 10px;\n    border: none;\n    border-radius: 5px;\n    cursor: pointer;\n    width: 100%;\n    margin-top: 10px;\n}\n\n.save-button[_ngcontent-%COMP%]:hover {\n    background-color: #0056b3;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9hcHAvcGF0aWVudC1mb3JtL3BhdGllbnQtZm9ybS5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksVUFBVTtJQUNWLGNBQWM7SUFDZCxhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLGtCQUFrQjtJQUNsQiwyQ0FBMkM7SUFDM0MsYUFBYTtJQUNiLHNCQUFzQjtJQUN0QixTQUFTO0FBQ2I7O0FBRUE7SUFDSSxhQUFhO0lBQ2Isc0JBQXNCO0FBQzFCOztBQUVBO0lBQ0ksaUJBQWlCO0lBQ2pCLGtCQUFrQjtBQUN0Qjs7QUFFQTs7SUFFSSxZQUFZO0lBQ1osZUFBZTtJQUNmLHNCQUFzQjtJQUN0QixrQkFBa0I7QUFDdEI7O0FBRUE7SUFDSSx5QkFBeUI7SUFDekIsWUFBWTtJQUNaLGVBQWU7SUFDZixhQUFhO0lBQ2IsWUFBWTtJQUNaLGtCQUFrQjtJQUNsQixlQUFlO0lBQ2YsV0FBVztJQUNYLGdCQUFnQjtBQUNwQjs7QUFFQTtJQUNJLHlCQUF5QjtBQUM3QiIsInNvdXJjZXNDb250ZW50IjpbIi5wYXRpZW50LWZvcm0ge1xyXG4gICAgd2lkdGg6IDUwJTtcclxuICAgIG1hcmdpbjogMCBhdXRvO1xyXG4gICAgcGFkZGluZzogMjBweDtcclxuICAgIGJhY2tncm91bmQ6ICNmOWY5Zjk7XHJcbiAgICBib3JkZXItcmFkaXVzOiA4cHg7XHJcbiAgICBib3gtc2hhZG93OiAwcHggMHB4IDEwcHggcmdiYSgwLCAwLCAwLCAwLjEpO1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XHJcbiAgICBnYXA6IDE1cHg7XHJcbn1cclxuXHJcbi5mb3JtLWdyb3VwIHtcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xyXG59XHJcblxyXG4uZm9ybS1ncm91cCBsYWJlbCB7XHJcbiAgICBmb250LXdlaWdodDogYm9sZDtcclxuICAgIG1hcmdpbi1ib3R0b206IDVweDtcclxufVxyXG5cclxuLmZvcm0tZ3JvdXAgaW5wdXQsXHJcbi5mb3JtLWdyb3VwIHNlbGVjdCB7XHJcbiAgICBwYWRkaW5nOiA4cHg7XHJcbiAgICBmb250LXNpemU6IDE2cHg7XHJcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjY2NjO1xyXG4gICAgYm9yZGVyLXJhZGl1czogNHB4O1xyXG59XHJcblxyXG4uc2F2ZS1idXR0b24ge1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzAwN2JmZjtcclxuICAgIGNvbG9yOiB3aGl0ZTtcclxuICAgIGZvbnQtc2l6ZTogMThweDtcclxuICAgIHBhZGRpbmc6IDEwcHg7XHJcbiAgICBib3JkZXI6IG5vbmU7XHJcbiAgICBib3JkZXItcmFkaXVzOiA1cHg7XHJcbiAgICBjdXJzb3I6IHBvaW50ZXI7XHJcbiAgICB3aWR0aDogMTAwJTtcclxuICAgIG1hcmdpbi10b3A6IDEwcHg7XHJcbn1cclxuXHJcbi5zYXZlLWJ1dHRvbjpob3ZlciB7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjMDA1NmIzO1xyXG59Il0sInNvdXJjZVJvb3QiOiIifQ== */"]
     });
   }
   return PatientFormComponent;
@@ -447,14 +514,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function PatientsComponent_p_5_Template(rf, ctx) {
+function PatientsComponent_p_2_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "p");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "Aucun patient trouv\u00E9");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
   }
 }
-function PatientsComponent_tbody_17_ng_container_1_tr_1_Template(rf, ctx) {
+function PatientsComponent_tbody_14_ng_container_1_tr_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr")(1, "td");
@@ -467,7 +534,7 @@ function PatientsComponent_tbody_17_ng_container_1_tr_1_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](6);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "td")(8, "button", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_tbody_17_ng_container_1_tr_1_Template_button_click_8_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_tbody_14_ng_container_1_tr_1_Template_button_click_8_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r10);
       const patient_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
       const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
@@ -476,7 +543,7 @@ function PatientsComponent_tbody_17_ng_container_1_tr_1_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](9, "View notes");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "button", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_tbody_17_ng_container_1_tr_1_Template_button_click_10_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_tbody_14_ng_container_1_tr_1_Template_button_click_10_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r10);
       const patient_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
       const ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
@@ -485,7 +552,7 @@ function PatientsComponent_tbody_17_ng_container_1_tr_1_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11, "Edit");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "button", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_tbody_17_ng_container_1_tr_1_Template_button_click_12_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_tbody_14_ng_container_1_tr_1_Template_button_click_12_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r10);
       const patient_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]().$implicit;
       const ctx_r13 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
@@ -504,10 +571,10 @@ function PatientsComponent_tbody_17_ng_container_1_tr_1_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](patient_r6.age);
   }
 }
-function PatientsComponent_tbody_17_ng_container_1_Template(rf, ctx) {
+function PatientsComponent_tbody_14_ng_container_1_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](1, PatientsComponent_tbody_17_ng_container_1_tr_1_Template, 14, 4, "tr", 0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](1, PatientsComponent_tbody_14_ng_container_1_tr_1_Template, 14, 4, "tr", 0);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerEnd"]();
   }
   if (rf & 2) {
@@ -516,19 +583,19 @@ function PatientsComponent_tbody_17_ng_container_1_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", patient_r6.id);
   }
 }
-function PatientsComponent_tbody_17_Template(rf, ctx) {
+function PatientsComponent_tbody_14_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tbody");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](1, PatientsComponent_tbody_17_ng_container_1_Template, 2, 1, "ng-container", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](1, PatientsComponent_tbody_14_ng_container_1_Template, 2, 1, "ng-container", 4);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
   }
   if (rf & 2) {
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r1.patients)("ngForTrackBy", ctx_r1.trackById);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r1.patients);
   }
 }
-function PatientsComponent_div_18_li_4_Template(rf, ctx) {
+function PatientsComponent_div_15_li_4_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "li");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
@@ -540,35 +607,35 @@ function PatientsComponent_div_18_li_4_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", note_r18.note, " ");
   }
 }
-function PatientsComponent_div_18_div_5_Template(rf, ctx) {
+function PatientsComponent_div_15_div_5_Template(rf, ctx) {
   if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div")(1, "p");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2, "No notes found for this patient");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
   }
 }
-function PatientsComponent_div_18_Template(rf, ctx) {
+function PatientsComponent_div_15_Template(rf, ctx) {
   if (rf & 1) {
     const _r20 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div")(1, "h2");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "ul");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](4, PatientsComponent_div_18_li_4_Template, 2, 1, "li", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](4, PatientsComponent_div_15_li_4_Template, 2, 1, "li", 4);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](5, PatientsComponent_div_18_div_5_Template, 3, 0, "div", 0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](5, PatientsComponent_div_15_div_5_Template, 3, 0, "div", 0);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "h3");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](7, "Add a new note");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "textarea", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function PatientsComponent_div_18_Template_textarea_ngModelChange_8_listener($event) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "textarea", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function PatientsComponent_div_15_Template_textarea_ngModelChange_8_listener($event) {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r20);
       const ctx_r19 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
       return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r19.newNoteContent = $event);
     });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "button", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_div_18_Template_button_click_9_listener() {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function PatientsComponent_div_15_Template_button_click_9_listener() {
       _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r20);
       const ctx_r21 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
       return _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵresetView"](ctx_r21.addNote());
@@ -579,7 +646,7 @@ function PatientsComponent_div_18_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"]("Notes for Patient ", ctx_r2.selectedPatientId, "");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"]("Notes for Patient with ID: ", ctx_r2.selectedPatientId, "");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r2.selectedPatientNotes);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
@@ -588,9 +655,9 @@ function PatientsComponent_div_18_Template(rf, ctx) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r2.newNoteContent);
   }
 }
-function PatientsComponent_ng_template_19_Template(rf, ctx) {
+function PatientsComponent_ng_template_16_Template(rf, ctx) {
   if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr")(1, "td", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr")(1, "td", 7);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2, "Aucun patient trouv\u00E9");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()();
   }
@@ -681,6 +748,8 @@ let PatientsComponent = /*#__PURE__*/(() => {
         console.error('Invalid Patiend ID. Cannot fetch notes.');
         return;
       }
+      this.selectedPatientId = patId;
+      console.log('Selected Patient ID updated to: ', this.selectedPatientId);
       console.log('View notes called for Patient ID: ', patId);
       this.notesService.getNotesByPatientId(patId).subscribe({
         next: notes => {
@@ -702,9 +771,16 @@ let PatientsComponent = /*#__PURE__*/(() => {
         alert('Please select a patient before adding a note.');
         return;
       }
+      // Trouver le patient correspondant à selectedPatientId
+      const selectedPatient = this.patients.find(p => p.patId === this.selectedPatientId);
+      if (!selectedPatient) {
+        console.error('Patient not found. Cannot add note.');
+        alert('Patient data is missing.');
+        return;
+      }
       const newNote = {
         patId: this.selectedPatientId,
-        patient: '',
+        patient: selectedPatient.lastName,
         note: this.newNoteContent
       };
       this.notesService.addNote(newNote).subscribe({
@@ -727,40 +803,34 @@ let PatientsComponent = /*#__PURE__*/(() => {
     static ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({
       type: PatientsComponent,
       selectors: [["app-patients"]],
-      decls: 21,
-      vars: 7,
-      consts: [[4, "ngIf"], ["border", "1"], [4, "ngIf", "ngIfElse"], ["noPatients", ""], [4, "ngFor", "ngForOf", "ngForTrackBy"], [3, "click"], [4, "ngFor", "ngForOf"], [3, "ngModel", "ngModelChange"], ["colspan", "4"]],
+      decls: 18,
+      vars: 4,
+      consts: [[4, "ngIf"], ["border", "1"], [4, "ngIf", "ngIfElse"], ["noPatients", ""], [4, "ngFor", "ngForOf"], [3, "click"], [3, "ngModel", "ngModelChange"], ["colspan", "4"]],
       template: function PatientsComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "h1");
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "Patients");
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "pre");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](4, "json");
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](2, PatientsComponent_p_2_Template, 2, 0, "p", 0);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "table", 1)(4, "thead")(5, "tr")(6, "th");
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](7, "ID");
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](5, PatientsComponent_p_5_Template, 2, 0, "p", 0);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "table", 1)(7, "thead")(8, "tr")(9, "th");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](10, "ID");
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "th");
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](9, "Name");
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "th");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](12, "Name");
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "th");
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11, "Age");
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "th");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Age");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "th");
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](16, "Actions");
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "th");
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](13, "Actions");
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]()()();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](17, PatientsComponent_tbody_17_Template, 2, 2, "tbody", 2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](14, PatientsComponent_tbody_14_Template, 2, 1, "tbody", 2);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](18, PatientsComponent_div_18_Template, 11, 4, "div", 0);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](19, PatientsComponent_ng_template_19_Template, 3, 0, "ng-template", null, 3, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](15, PatientsComponent_div_15_Template, 11, 4, "div", 0);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](16, PatientsComponent_ng_template_16_Template, 3, 0, "ng-template", null, 3, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
         }
         if (rf & 2) {
-          const _r3 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](20);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](3);
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](4, 5, ctx.patients));
+          const _r3 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](17);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.patients && ctx.patients.length === 0);
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](12);
@@ -769,7 +839,7 @@ let PatientsComponent = /*#__PURE__*/(() => {
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.selectedPatientNotes && ctx.selectedPatientNotes.length > 0);
         }
       },
-      dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_4__.NgIf, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgModel, _angular_common__WEBPACK_IMPORTED_MODULE_4__.JsonPipe],
+      dependencies: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.NgForOf, _angular_common__WEBPACK_IMPORTED_MODULE_4__.NgIf, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgModel],
       styles: ["/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsInNvdXJjZVJvb3QiOiIifQ== */"]
     });
   }
@@ -871,6 +941,17 @@ let PatientService = /*#__PURE__*/(() => {
           patId: p.patId
         }));
       }));
+    }
+    getPatientById(id) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error("Aucun token trouvé.");
+        return (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.throwError)(() => new Error("Utilisateur non authentifié."));
+      }
+      const headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__.HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get(`${this.apiUrl}/${id}`, {
+        headers
+      });
     }
     addPatient(patient) {
       return this.http.post(`${this.apiUrl}`, patient);
