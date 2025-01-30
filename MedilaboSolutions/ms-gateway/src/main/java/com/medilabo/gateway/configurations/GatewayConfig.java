@@ -28,9 +28,14 @@ public class GatewayConfig {
 				.route("patient-service", r -> r.path("/api/patients/**")
 						.filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config())))
 						.uri("http://localhost:8080"))
+				//Route for notes service
 				.route("notes-service", r -> r.path("/api/notes/**")
 						.filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config())))
-						.uri("http://localhost:8083"))				
+						.uri("http://localhost:8083"))
+				//Route for risk service
+				.route("diabetes-risk-service", r -> r.path("/api/risk/**")
+						.filters(f -> f.filter(jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config())))
+						.uri("http://localhost:8084"))	
 				//Default route
 				.route("default-route", r -> r.path("/**")
 						.filters(f -> f.setStatus(HttpStatus.NOT_FOUND))
