@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.exception;
+package com.medilabo.msbackendpatient.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

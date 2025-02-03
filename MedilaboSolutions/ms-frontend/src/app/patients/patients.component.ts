@@ -66,7 +66,7 @@ export class PatientsComponent {
     this.router.navigate(['/patient-form'], { queryParams: { id: patient.id } }); //redirecting to patient form
   }
 
-  deletePatient(id: number) {
+  deletePatient(id: string) {
     this.patientService.deletePatient(id).subscribe({
       next: () => {
         console.log('Patient deleted successfully!');

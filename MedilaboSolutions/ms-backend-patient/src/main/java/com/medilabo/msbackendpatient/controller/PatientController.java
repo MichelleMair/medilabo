@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.controller;
+package com.medilabo.msbackendpatient.controller;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.medilabo.MedilaboSolutions.model.Patient;
-import com.medilabo.MedilaboSolutions.service.PatientService;
+import com.medilabo.msbackendpatient.model.Patient;
+import com.medilabo.msbackendpatient.service.PatientService;
 
 @RestController
 @RequestMapping("/api/patients")

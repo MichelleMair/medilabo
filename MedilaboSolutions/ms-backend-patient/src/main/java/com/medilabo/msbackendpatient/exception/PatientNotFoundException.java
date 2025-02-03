@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.exception;
+package com.medilabo.msbackendpatient.exception;
 
 public class PatientNotFoundException extends RuntimeException {
 

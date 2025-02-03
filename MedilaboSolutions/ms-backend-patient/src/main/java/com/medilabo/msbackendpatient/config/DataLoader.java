@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.config;
+package com.medilabo.msbackendpatient.config;
 
 //@Configuration
 public class DataLoader {

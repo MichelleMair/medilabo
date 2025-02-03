@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.service;
+package com.medilabo.msbackendpatient.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,10 +21,11 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
-import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
-import com.medilabo.MedilaboSolutions.model.Patient;
-import com.medilabo.MedilaboSolutions.model.SequenceCounter;
-import com.medilabo.MedilaboSolutions.repository.PatientRepository;
+import com.medilabo.msbackendpatient.exception.PatientNotFoundException;
+import com.medilabo.msbackendpatient.model.Patient;
+import com.medilabo.msbackendpatient.model.SequenceCounter;
+import com.medilabo.msbackendpatient.repository.PatientRepository;
+import com.medilabo.msbackendpatient.service.PatientService;
 
 
 public class PatientServiceTest {

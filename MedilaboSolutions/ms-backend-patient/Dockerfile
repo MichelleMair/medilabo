@@ -14,7 +14,9 @@ RUN mvn dependency:go-offline
 COPY src ./src
 
 # Build le projet et créer le fichier .jar
-RUN mvn clean package -DskipTests && ls -l /app/target
+RUN mvn clean package -DskipTests -DfinalName=ms-backend-patient
+
+RUN ls -la /app/target
 
 # Build l'image java pour l'exécution
 FROM openjdk:17-jdk-slim

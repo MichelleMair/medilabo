@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.service;
+package com.medilabo.msbackendpatient.service;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -13,10 +13,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.medilabo.MedilaboSolutions.exception.PatientNotFoundException;
-import com.medilabo.MedilaboSolutions.model.Patient;
-import com.medilabo.MedilaboSolutions.model.SequenceCounter;
-import com.medilabo.MedilaboSolutions.repository.PatientRepository;
+import com.medilabo.msbackendpatient.exception.PatientNotFoundException;
+import com.medilabo.msbackendpatient.model.Patient;
+import com.medilabo.msbackendpatient.model.SequenceCounter;
+import com.medilabo.msbackendpatient.repository.PatientRepository;
 
 @Service
 public class PatientService {

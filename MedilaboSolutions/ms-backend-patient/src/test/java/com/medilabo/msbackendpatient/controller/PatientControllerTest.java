@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.controller;
+package com.medilabo.msbackendpatient.controller;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -29,9 +29,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.medilabo.MedilaboSolutions.config.test.TestSecurityConfig;
-import com.medilabo.MedilaboSolutions.model.Patient;
-import com.medilabo.MedilaboSolutions.service.PatientService;
+import com.medilabo.msbackendpatient.config.test.TestSecurityConfig;
+import com.medilabo.msbackendpatient.controller.PatientController;
+import com.medilabo.msbackendpatient.model.Patient;
+import com.medilabo.msbackendpatient.service.PatientService;
 
 @Import(TestSecurityConfig.class)
 @WebMvcTest(controllers = PatientController.class)

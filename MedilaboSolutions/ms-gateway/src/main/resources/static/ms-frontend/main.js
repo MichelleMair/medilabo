@@ -350,7 +350,7 @@ let PatientFormComponent = /*#__PURE__*/(() => {
           this.patientService.getPatientById(params['id']).subscribe({
             next: data => {
               if (data) {
-                data.dateOfBirth = new Date(data.dateOfBirth);
+                data.dateOfBirth = new Date(data.dateOfBirth).toISOString().split('T')[0];
                 this.patient = data;
               } else {
                 console.error("Patient not found for ID: ", params['id']);
@@ -362,8 +362,8 @@ let PatientFormComponent = /*#__PURE__*/(() => {
       });
     }
     savePatient() {
-      if (!this.patient.firstName || !this.patient.lastName || !this.patient.dateOfBirth || !this.patient.gender || !this.patient.address || !this.patient.phoneNumber) {
-        alert('All fields are required.');
+      if (!this.patient.firstName || !this.patient.lastName || !this.patient.dateOfBirth || !this.patient.gender) {
+        alert('First name, Last name, Birthdate and Gender are required.');
         return;
       }
       if (this.patient.id) {

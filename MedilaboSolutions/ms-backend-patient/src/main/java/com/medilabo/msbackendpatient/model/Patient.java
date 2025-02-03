@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.model;
+package com.medilabo.msbackendpatient.model;
 
 import java.time.LocalDate;
 
@@ -36,7 +36,7 @@ public class Patient {
 	@Transient
 	private int age;
 	
-	@Pattern(regexp= "^(Male|Female|Other)$", message= "Gender must be 'Male', 'Female', or 'Other'. ")
+	@Pattern(regexp= "^(Male|Female|Other)$", message= "Gender must be 'Male', 'Female', or 'Other'.")
 	private String gender;
 	
 	private String address;

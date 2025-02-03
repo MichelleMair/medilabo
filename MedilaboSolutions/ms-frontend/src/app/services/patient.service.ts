@@ -53,7 +53,7 @@ export class PatientService {
     return this.http.put<any>(`${this.apiUrl}/${patient.id}`, patient);
   }
 
-  deletePatient(id: number): Observable<any> {
+  deletePatient(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 

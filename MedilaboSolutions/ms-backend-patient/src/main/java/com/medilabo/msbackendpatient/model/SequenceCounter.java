@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.model;
+package com.medilabo.msbackendpatient.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

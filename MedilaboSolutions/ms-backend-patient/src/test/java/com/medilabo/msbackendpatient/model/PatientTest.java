@@ -1,4 +1,4 @@
-package com.medilabo.MedilaboSolutions.model;
+package com.medilabo.msbackendpatient.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
+
+import com.medilabo.msbackendpatient.model.Patient;
 
 public class PatientTest {
 
