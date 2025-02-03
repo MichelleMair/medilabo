@@ -37,11 +37,12 @@ public class Patient {
 	private int age;
 	
 	@Pattern(regexp= "^(Male|Female|Other)$", message= "Gender must be 'Male', 'Female', or 'Other'.")
+	@NotBlank(message= "Gender is required")
 	private String gender;
 	
 	private String address;
 	
-	@Pattern(regexp= "^\\+?[0-9\\-\\s]+)?$", message= "Phone number must be valid")
+	@Pattern(regexp= "^\\+?[0-9\\-\\s]*$", message= "Phone number must be valid")
 	private String phoneNumber;
 	
 	private int patId;

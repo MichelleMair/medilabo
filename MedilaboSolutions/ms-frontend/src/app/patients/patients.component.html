@@ -24,23 +24,26 @@
         </ng-container>
     </tbody>
 </table>
-
-<div *ngIf="selectedPatientNotes && selectedPatientNotes.length > 0">
-    <h2>Notes for Patient with ID:  {{ selectedPatientId }}</h2>
-    <ul>
-        <li *ngFor="let note of selectedPatientNotes">
-            {{note.note}}
-        </li>
-    </ul>
-    <div *ngIf="!selectedPatientNotes || selectedPatientNotes.length == 0">
-        <p>No notes found for this patient</p>
-    </div>
-    <h3>Add a new note</h3>
-    <textarea [(ngModel)]="newNoteContent"></textarea>
-    <button (click)="addNote()">Add note</button>
-</div>
 <ng-template #noPatients>
     <tr>
         <td colspan="4">Aucun patient trouvé</td>
     </tr>
 </ng-template>
+
+
+<div *ngIf="selectedPatientNotes !== null">
+    <h2>Notes for Patient with ID:  {{ selectedPatientId }}</h2>
+    <ul *ngIf="selectedPatientNotes.length > 0; else noNotesTemplate">
+        <li *ngFor="let note of selectedPatientNotes">
+            {{note.note}}
+        </li>
+    </ul>
+    <ng-template #noNotesTemplate>
+        <p>No notes found for this patient.</p>
+    </ng-template>
+
+    <h3>Add a new note</h3>
+    <textarea [(ngModel)]="newNoteContent" placeholder="Enter a new note ..."></textarea>
+    <button (click)="addNote()">Add note</button>
+</div>
+

@@ -38,7 +38,12 @@ public class PatientService {
 		FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
 		SequenceCounter counter = mongoOperations.findAndModify(query,  update,  options, SequenceCounter.class);
 		
-		return counter != null ? counter.getSequenceValue() : 1;
+		if(counter == null) {
+			counter = new SequenceCounter(sequenceName, 1);
+			mongoOperations.save(counter);
+		}
+		
+		return counter.getSequenceValue();
 	}
 	
 	// Calculate patient's age
