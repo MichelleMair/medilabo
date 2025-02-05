@@ -36,7 +36,7 @@ cd ms-frontend && npm start
 
 - **Database**: MongoDB (collections: `patients`and `notes`)
 - **Backend Framework** : Spring Boot
-- ** Frontend Framework** : Angular 
+- **Frontend Framework** : Angular 
 - **Security** : Spring Security 
 - **Inter-service Communication** : OpenFeign
 
