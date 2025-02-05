@@ -1,0 +1,58 @@
+/* Style de l'en-tête */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  
+  /* Nom de l'application */
+  .app-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  
+  /* Informations de l'utilisateur */
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+  
+  
+  /* Bouton de déconnexion */
+  .logout-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-btn:hover {
+    background-color: #c82333;
+  }
+  
+  
+  /* Responsive pour petits écrans */
+  @media (max-width: 600px) {
+    .app-title {
+      font-size: 18px;
+    }
+    .user-info {
+      font-size: 12px;
+    }
+    .logout-btn {
+      padding: 6px 10px;
+    }
+  }

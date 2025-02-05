@@ -69,6 +69,12 @@ public class PatientService {
 				.orElseThrow(() -> new PatientNotFoundException("Patient not found with ID: " + id));
 	}
 	
+	//Get patient by patId
+	public Patient getPatientByPatId(int patId) {
+		return patientRepository.findByPatId(patId)
+				.orElseThrow(() -> new PatientNotFoundException("Patient not found wit patId: " + patId));
+	}
+	
 	//add new patient
 	public Patient addPatient(Patient patient) {
 		boolean exists = patientRepository.existsByFirstNameAndLastNameAndDateOfBirth(

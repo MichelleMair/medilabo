@@ -82,7 +82,7 @@ public class SecurityConfig {
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 		http.authorizeExchange(exchanges -> exchanges
 				.pathMatchers("/api/auth/**").permitAll()
-				.pathMatchers("/api/patients/**", "/api/notes/**").hasAnyRole("USER", "ADMIN")
+				.pathMatchers("/api/patients/**", "/api/notes/**", "/api/risk/**").hasAnyRole("USER", "ADMIN")
 				.anyExchange().authenticated())
 			.csrf(ServerHttpSecurity.CsrfSpec::disable)
 			.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))

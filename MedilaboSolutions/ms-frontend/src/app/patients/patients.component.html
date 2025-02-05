@@ -1,20 +1,28 @@
-<h1>Patients</h1>
+<div class="header-container">
+    <h1>Patients</h1>
+    <button class="add-patient-btn" (click)="addNewPatient()">+ Add new patient</button>
+</div>
+
 <p *ngIf="patients && patients.length === 0">Aucun patient trouvé</p>
+
+
 <table border="1">
     <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Age</th>
+            <th>Diabetes Risk Level</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody *ngIf="patients && patients.length > 0; else noPatients">
-        <ng-container *ngFor="let patient of patients">
+        <ng-container *ngFor="let patient of paginatedPatients">
             <tr *ngIf="patient.id">
                 <td>{{ patient.id }}</td>
                 <td>{{ patient.lastName }}  {{ patient.firstName}}</td>
                 <td>{{ patient.age }}</td>
+                <td> {{ patient.riskLevel || 'Calculating ...' }}</td>
                 <td>
                     <button (click)="viewNotes(patient.patId)">View notes</button>
                     <button (click)="editPatient(patient)">Edit</button>
@@ -24,6 +32,14 @@
         </ng-container>
     </tbody>
 </table>
+
+<!-- Boutons de pagination -->
+ <div class="pagination-controls">
+    <button (click)="prevPage()" [disabled]="currentPage ===1">Previous</button>
+    <span>Page {{ currentPage }} of  {{ totalPages }} </span>
+    <button (click)="nextPage()" [disabled]="(currentPage * patientsPerPage) >= patients.length">Next</button>
+</div>
+
 <ng-template #noPatients>
     <tr>
         <td colspan="4">Aucun patient trouvé</td>
@@ -46,4 +62,5 @@
     <textarea [(ngModel)]="newNoteContent" placeholder="Enter a new note ..."></textarea>
     <button (click)="addNote()">Add note</button>
 </div>
+
 

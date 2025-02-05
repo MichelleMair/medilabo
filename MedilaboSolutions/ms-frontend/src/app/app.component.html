@@ -1,1 +1,10 @@
+<header class="app-header">
+    <div class="app-title">{{ title }}</div>
+
+    <div class="user-info" *ngIf="username">
+        Logged in as: <strong>{{ username }}</strong>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+    </div>
+</header>
+
 <router-outlet></router-outlet>

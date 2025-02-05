@@ -10,9 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patient {
-	private int patId;
+	private String id;
 	private String firstName;
 	private String lastName;
 	private LocalDate dateOfBirth;
+	private int age;
 	private String gender;
+	private String address;
+	private String phoneNumber;
+	private int patId;
 }

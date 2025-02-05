@@ -42,7 +42,7 @@ public class DiabetesRiskEvaluationServiceTest {
 		patient.setDateOfBirth(LocalDate.of(1990, 2, 1));
 		patient.setGender("Male");
 		
-		when(patientClient.getPatientById(1)).thenReturn(patient);
+		when(patientClient.getPatientByPatId(1)).thenReturn(patient);
 		when(notesClient.getNotesByPatientId(1)).thenReturn(List.of());
 		
 		String riskLevel = diabetesRiskEvaluationService.evaluateRisk(1);
@@ -63,7 +63,7 @@ public class DiabetesRiskEvaluationServiceTest {
 				new Note("3", 2, "Poids")
 		);
 		
-		when(patientClient.getPatientById(2)).thenReturn(patient);
+		when(patientClient.getPatientByPatId(2)).thenReturn(patient);
 		when(notesClient.getNotesByPatientId(2)).thenReturn(notes);
 		
 		String riskLevel = diabetesRiskEvaluationService.evaluateRisk(2);
@@ -86,7 +86,7 @@ public class DiabetesRiskEvaluationServiceTest {
 				new Note("6", 3, "Anticorps")
 		);
 		
-		when(patientClient.getPatientById(3)).thenReturn(patient);
+		when(patientClient.getPatientByPatId(3)).thenReturn(patient);
 		when(notesClient.getNotesByPatientId(3)).thenReturn(notes);
 		
 		String riskLevel = diabetesRiskEvaluationService.evaluateRisk(3);
@@ -109,7 +109,7 @@ public class DiabetesRiskEvaluationServiceTest {
 				
 		);
 		
-		when(patientClient.getPatientById(4)).thenReturn(patient);
+		when(patientClient.getPatientByPatId(4)).thenReturn(patient);
 		when(notesClient.getNotesByPatientId(4)).thenReturn(notes);
 		
 		String riskLevel = diabetesRiskEvaluationService.evaluateRisk(4);

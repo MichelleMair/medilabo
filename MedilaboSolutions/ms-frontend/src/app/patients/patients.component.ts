@@ -1,6 +1,7 @@
 import { Component , ChangeDetectorRef, NgZone } from '@angular/core';
 import { PatientService } from '../services/patient.service';
 import { NotesService } from '../services/notes.service';
+import { DiabetesRiskService } from '../services/diabetes-risk.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,19 +11,28 @@ import { Router } from '@angular/router';
 })
 export class PatientsComponent {
   patients: any[] = [];
+  paginatedPatients : any [] = [] ;
   selectedPatientNotes: any[] | null = null;
   selectedPatientId: number = 0;
   newNoteContent: string = '';
   errorMessage: string = '';
   userRole: string | null = null;
+  currentPage: number = 1;
+  patientsPerPage: number = 10;
+  totalPages: number = 1;
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone : NgZone, private patientService: PatientService, private notesService: NotesService, private router: Router) {}
+  constructor(
+    private cdr: ChangeDetectorRef, 
+    private ngZone : NgZone, 
+    private patientService: PatientService, 
+    private notesService: NotesService, 
+    private diabetesRiskService: DiabetesRiskService, 
+    private router: Router) {}
 
   ngOnInit() {
     console.log('Component initialized');
 
     this.userRole = localStorage.getItem('role');
-    console.log("Rôle récupéré du localStorage: ", this.userRole);
 
     if(!this.userRole || this.userRole !== 'ADMIN' && this.userRole !== 'USER') {
       console.warn('Unauthorized user. Redirecting to login...');
@@ -34,8 +44,6 @@ export class PatientsComponent {
   loadPatients() {
     this.patientService.getPatients().subscribe({
       next: (patients) => {
-        console.log('Raw patients from API : ', patients);
-
         if (!Array.isArray(patients)) {
           console.error("ERREUR: 'patients' n'est pas un tableau!");
           return
@@ -45,9 +53,22 @@ export class PatientsComponent {
           if (!patient.id) {
             console.error("Un patient n'a pas de 'id' valide: ", patient);
           }
+
+          // Récupération du niveau de risque 
+          this.diabetesRiskService.getRiskLevel(patient.patId).subscribe({
+            next: (risk) => {
+              patient.riskLevel = risk;
+              this.cdr.markForCheck(); 
+            },
+            error : (err) => {
+              console.error(`Erreur lors de la récupération du risque pour le patient ID ${patient.patId}: `, err);
+            }
+          })
         });
+        
         this.patients = [...patients];
-        console.log('Patients stored in component: ', this.patients);
+        this.totalPages = Math.ceil(this.patients.length / this.patientsPerPage);
+        this.updatePaginatedPatients();
         this.cdr.markForCheck();
         this.cdr.detectChanges();
 
@@ -66,10 +87,13 @@ export class PatientsComponent {
     this.router.navigate(['/patient-form'], { queryParams: { id: patient.id } }); //redirecting to patient form
   }
 
+  addNewPatient() {
+    this.router.navigate(['/patient-form']);
+  }
+
   deletePatient(id: string) {
     this.patientService.deletePatient(id).subscribe({
       next: () => {
-        console.log('Patient deleted successfully!');
         this.loadPatients();
       },
       error: (err) => {
@@ -79,7 +103,6 @@ export class PatientsComponent {
   }
 
   viewNotes(patId: number) {
-    console.log('View notes called with patId: ', patId);
     if (!patId) {
       console.error('ERREUR: patId est null ou undefined pou run patient.');
       return;
@@ -95,7 +118,6 @@ export class PatientsComponent {
 
     this.notesService.getNotesByPatientId(patId).subscribe({
       next: (notes) => {
-        console.log('Notes retrieved: ', notes);
         this.selectedPatientNotes = notes;
       },
       error: (err) => {
@@ -135,6 +157,17 @@ export class PatientsComponent {
       next: () => {
       this.viewNotes(this.selectedPatientId);
       this.newNoteContent = '';
+
+        // Recalculer le risque de diabète après ajout de la note
+        this.diabetesRiskService.getRiskLevel(this.selectedPatientId).subscribe ({
+          next : (updatedRiskLevel) => {
+            selectedPatient.riskLevel = updatedRiskLevel;
+            this.cdr.markForCheck();
+          },
+          error : (err) => {
+            console.error('Erreur lors du recalcul du risque de diabète.', err);
+          }
+        });
       },
       error: (err) => {
         console.error('Failed to add note.', err);
@@ -142,8 +175,29 @@ export class PatientsComponent {
     });
   }
 
+  // Mise en place d'une pagination pour l'affichage de la liste des patients 
+  updatePaginatedPatients() {
+    const start = (this.currentPage - 1) * this.patientsPerPage;
+    const end = start + this.patientsPerPage;
+    this.paginatedPatients = this.patients.slice(start, end);
+  }
+
+  nextPage() {
+    if((this.currentPage * this.patientsPerPage) < this.patients.length) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  //------------ gestion pagination - fin --------------------
+
+  
   trackById(index: number, patient: any): string {
-    console.log("trackById appelé pour: " , patient);
     return patient.id ? patient.id.toString() : index.toString();
   }
 }

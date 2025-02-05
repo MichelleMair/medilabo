@@ -1,6 +1,8 @@
 package com.medilabo.msbackendpatient.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,13 @@ public class PatientController {
 			return ResponseEntity.ok(patient);
 	}
 	
+	//Get patient by patId
+	@GetMapping("/patId/{patId}")
+	public ResponseEntity<Patient> getPatientByPatId(@PathVariable int patId) {
+		Patient patient = patientService.getPatientByPatId(patId);
+		return ResponseEntity.ok(patient);
+	}
+	
 	//Add new patient
 	@PostMapping
 	public ResponseEntity<Patient> createPatient(@Validated @RequestBody Patient patient) {
@@ -55,8 +64,10 @@ public class PatientController {
 	
 	//Delete patient by id
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deletePatient(@PathVariable String id) {
+	public ResponseEntity<Map<String, String>> deletePatient(@PathVariable String id) {
 		patientService.deletePatient(id);
-		return ResponseEntity.ok("Patient with ID: " + id + " has been deleted successfully!");
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "Patient with ID: " + id + " has been deleted successfully!");
+		return ResponseEntity.ok(response);
 	}
 }

@@ -111,3 +111,49 @@ class DiabetesRiskEvaluationServiceTest {
         assertEquals("Early onset", riskLevel);
     }
 }
+/***********************************************************************************************/
+/******************************* CONTROLLER ****************************************************/
+
+package com.medilabo.diabetes.risk.controller;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.medilabo.diabetes.risk.service.DiabetesRiskEvaluationService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+@WebMvcTest(DiabetesRiskEvaluationController.class)
+class DiabetesRiskEvaluationControllerTest {
+
+    private MockMvc mockMvc;
+
+    @Mock
+    private DiabetesRiskEvaluationService diabetesRiskEvaluationService;
+
+    @InjectMocks
+    private DiabetesRiskEvaluationController diabetesRiskEvaluationController;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(diabetesRiskEvaluationController).build();
+    }
+
+    @Test
+    void testGetRiskLevel() throws Exception {
+        when(diabetesRiskEvaluationService.evaluateRisk(1)).thenReturn("Borderline");
+
+        mockMvc.perform(get("/api/risk/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Borderline"));
+    }
+}
