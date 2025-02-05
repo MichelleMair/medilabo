@@ -11,30 +11,10 @@ import com.medilabo.diabetes.risk.client.NotesClient;
 import com.medilabo.diabetes.risk.client.PatientClient;
 import com.medilabo.diabetes.risk.model.Note;
 import com.medilabo.diabetes.risk.model.Patient;
+import com.medilabo.diabetes.risk.utils.TriggerTerms;
 
 @Service
 public class DiabetesRiskEvaluationService {
-
-	private static final List<String> TRIGGER_TERMS = List.of(
-			"hémoglobine a1c",
-			"hemoglobine a1c",
-			"microalbumine",
-			"taille",
-			"poids",
-			"fumeur", 
-			"fumeuse",
-			"anormal",
-			"anormale",
-			"anormales",
-			"cholestérol",
-			"cholesterol",
-			"vertiges",
-			"vertige",
-			"rechute",
-			"réaction",
-			"reaction",
-			"anticorps"
-	);
 
 	private final PatientClient patientClient;
 	private final NotesClient notesClient;
@@ -63,7 +43,7 @@ public class DiabetesRiskEvaluationService {
 				.map(note -> {
 					String noteContentLower = note.getNote().toLowerCase();
 					
-					long count = TRIGGER_TERMS.stream()
+					long count = TriggerTerms.TERMS.stream()
 							.filter(trigger -> {
 								// Utilisation de regex pour détecter les termes déclencheurs stricts avec l'acceptation des majuscules et minuscules
 								Pattern pattern = Pattern.compile("\\b" + Pattern.quote(trigger.toLowerCase()) + "\\b", Pattern.CASE_INSENSITIVE);
