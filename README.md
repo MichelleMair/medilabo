@@ -186,8 +186,8 @@ To make our application more sustainable and energy-efficient,the following **Gr
 
 Each microservice has a dedicated **README** :
 
-- [ms-backend-patient README](./ms-backend-patient/README.md)
-- [ms-notes README](./ms-notes/README.md)
-- [ms-diabetes-risk README](./ms-diabetes-risk/README.md)
-- [ms-gateway README](./ms-gateway/README.md)
-- [ms-frontend README](./ms-frontend/README.md)
+- [ms-backend-patient README](./MedilaboSolutions/ms-backend-patient/README.md)
+- [ms-notes README](./MedilaboSolutions/ms-notes/README.md)
+- [ms-diabetes-risk README](./MedilaboSolutions/ms-diabetes-risk/README.md)
+- [ms-gateway README](./MedilaboSolutions/ms-gateway/README.md)
+- [ms-frontend README](./MedilaboSolutions/ms-frontend/README.md)
