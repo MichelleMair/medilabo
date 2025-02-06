@@ -22,7 +22,7 @@ The MongoDB database consists of a `patients` collection for patients details an
 ## Insert initial data into MongoDB database
 To insert the initial data into the MongoDB database:
 For **patients** collection: 
- - enable the 'DataLoader' class located in the package 'com.medilabo.MedilaboSolutions.config'
+ - enable the **DataLoader.java** class located in the package `com.medilabo.msbackendpatient.config`
  - uncomment the 'loadData' method
  - restart the application
 
