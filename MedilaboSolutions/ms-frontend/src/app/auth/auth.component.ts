@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-auth',
@@ -14,7 +15,7 @@ export class AuthComponent {
   constructor(private http: HttpClient, private router : Router) {}
 
   onLogin() {
-    this.http.post<any>('http://localhost:8082/api/auth', this.credentials).subscribe({
+    this.http.post<any>(environment.AUTH_URL, this.credentials).subscribe({
       next: (response) => {
         console.log('Login successful', response);
 

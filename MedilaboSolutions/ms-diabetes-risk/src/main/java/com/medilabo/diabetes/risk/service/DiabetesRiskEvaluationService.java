@@ -48,9 +48,6 @@ public class DiabetesRiskEvaluationService {
 								// Utilisation de regex pour détecter les termes déclencheurs stricts avec l'acceptation des majuscules et minuscules
 								Pattern pattern = Pattern.compile("\\b" + Pattern.quote(trigger.toLowerCase()) + "\\b", Pattern.CASE_INSENSITIVE);
 								boolean found = pattern.matcher(noteContentLower).find();
-								if (found) {
-									System.out.println("Déclencheur trouvé: " + trigger);
-								}
 								return found;
 							})
 							.count();
