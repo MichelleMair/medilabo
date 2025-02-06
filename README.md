@@ -7,15 +7,15 @@ This app helps healthcare professionals evaluate the likelihood of diabetes base
 
 ## Table of Contents
 
-1. [Project Overview] (#project-overview)
-2. [Built With] (#built-with)
-3. [Architecture Overview] (#architecture-overview)
-4. [Getting Started] (#getting-started)
-5. [How to Run the Application] (#how-to-run-the-application)
-6. [Authentication] (#authentication)
-7. [Technical Information] (#technical-information)
-8. [Green Code Practices] (#green-code-practices)
-9. [Microservices Documentation] (#microservices-documentation)
+1. [Project Overview](#project-overview)
+2. [Built With](#built-with)
+3. [Architecture Overview](#architecture-overview)
+4. [Getting Started](#getting-started)
+5. [How to Run the Application](#how-to-run-the-application)
+6. [Authentication](#authentication)
+7. [Technical Information](#technical-information)
+8. [Green Code Practices](#green-code-practices)
+9. [Microservices Documentation](#microservices-documentation)
 
 ---
 
@@ -186,8 +186,8 @@ To make our application more sustainable and energy-efficient,the following **Gr
 
 Each microservice has a dedicated **README** :
 
-- [ms-backend-patient README] (./ms-backend-patient/README.md)
-- [ms-notes README] (./ms-notes/README.md)
-- [ms-diabetes-risk README] (./ms-diabetes-risk/README.md)
-- [ms-gateway README] (./ms-gateway/README.md)
-- [ms-frontend README] (./ms-frontend/README.md)
+- [ms-backend-patient README](./ms-backend-patient/README.md)
+- [ms-notes README](./ms-notes/README.md)
+- [ms-diabetes-risk README](./ms-diabetes-risk/README.md)
+- [ms-gateway README](./ms-gateway/README.md)
+- [ms-frontend README](./ms-frontend/README.md)
