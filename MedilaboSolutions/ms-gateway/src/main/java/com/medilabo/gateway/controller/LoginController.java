@@ -47,6 +47,11 @@ public class LoginController {
 		
 		logger.info("Username fourni: {}, Password fourni: {}", providedUsername, providedPassword);
 		
+		//Ajout de lofs pour vérifier les valeurs ddes propriétés injectées
+		logger.info("Username attendu (depuis properties/env): {}", username);
+		logger.info("Mot de passe attendu (encodé depuis properties/env): {}", password);
+		
+		
 		if (username.equals(providedUsername) && passwordEncoder.matches(providedPassword, password)) {
 			logger.info("Authentification réussie pour: {} ", providedUsername);
 

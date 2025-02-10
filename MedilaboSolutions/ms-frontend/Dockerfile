@@ -9,7 +9,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build -- --output-path=dist/ms-frontend --base-href=/ms-frontend/
+RUN npm run build -- --configuration=docker --output-path=dist/ms-frontend --base-href=/ms-frontend/
 
 FROM httpd:2.4
 

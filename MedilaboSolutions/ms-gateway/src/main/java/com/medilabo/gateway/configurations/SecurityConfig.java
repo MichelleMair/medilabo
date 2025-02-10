@@ -98,6 +98,7 @@ public class SecurityConfig {
 					.password(passwordEncoder.encode("password"))
 					.roles("USER")
 					.build();
+		System.out.println("ENCODING PASSWORD IN SECURITY CONFIG : " + passwordEncoder.encode("password"));
 		UserDetails admin = User.withUsername("admin")
 				.password(passwordEncoder.encode("password"))
 				.roles("ADMIN")

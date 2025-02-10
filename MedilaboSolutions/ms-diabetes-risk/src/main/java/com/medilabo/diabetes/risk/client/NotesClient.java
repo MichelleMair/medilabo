@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.medilabo.diabetes.risk.model.Note;
 
-@FeignClient(name= "ms-notes", url="http://localhost:8083")
+@FeignClient(name= "ms-notes", url="http://ms-notes:8083")
 public interface NotesClient {
 	
 	@GetMapping("/api/notes/{patId}")
