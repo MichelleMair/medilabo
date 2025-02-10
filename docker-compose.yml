@@ -1,78 +1,76 @@
-name: medilabo_project
+version: '3.8'
 
 services:
-
-  # MongoDB Service
-  mongodb:
-    image: mongo:6.0
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-
-  # Backend Patient Microservice
   ms-backend-patient:
     build:
       context: ./MedilaboSolutions/ms-backend-patient
       dockerfile: Dockerfile
-    container_name: ms-backend-patient
     ports:
       - "8080:8080"
-    depends_on:
-      - mongodb
-      - ms-gateway
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/medilabo
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://ms-gateway:8082
+      SPRING_DATA_MONGODB_URI: mongodb+srv://michellerkmairet:jexya7JvqHpoZAJM@medilabocluster.ejx4f.mongodb.net/medilabo?retryWrites=true&w=majority&appName=MedilaboCluster
+    depends_on:
+      - mongodb-patient
 
-  # Notes Microservice
   ms-notes:
     build:
       context: ./MedilaboSolutions/ms-notes
       dockerfile: Dockerfile
-    container_name: ms-notes
     ports:
       - "8083:8083"
-    depends_on:
-      - mongodb
-      - ms-gateway
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/medilabo_notes
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://ms-gateway:8082
+      SPRING_DATA_MONGODB_URI: mongodb+srv://notes_user:secure_password@medilabocluster.ejx4f.mongodb.net/?retryWrites=true&w=majority&appName=MedilaboCluster
+    depends_on:
+      - mongodb-notes
 
-  # Diabetes Risk Microservice
   ms-diabetes-risk:
     build:
       context: ./MedilaboSolutions/ms-diabetes-risk
       dockerfile: Dockerfile
-    container_name: ms-diabetes-risk
     ports:
       - "8084:8084"
-    depends_on:
-      - ms-gateway
     environment:
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://ms-gateway:8082
 
-  # API Gateway
   ms-gateway:
     build:
       context: ./MedilaboSolutions/ms-gateway
       dockerfile: Dockerfile
-    container_name: ms-gateway
     ports:
       - "8082:8082"
+    environment:
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://ms-gateway:8082
+      AUTH_USERNAME: user
+      AUTH_PASSWORD: $2a$10$e3DcyuLgiltgq/uU2zZwA.Fg.ezp6T4LSMC1fySCkbL6XIQZ1Gn0a
+      SECURITY_JWT_SECRET: VZt6BknY0azyGkSvLF1ve/2Vq1QBf67dniofFr/Q6hs=
 
-  # Frontend Angular Application
   ms-frontend:
     build:
       context: ./MedilaboSolutions/ms-frontend
       dockerfile: Dockerfile
-    container_name: ms-frontend
     ports:
       - "4200:80"
-    depends_on:
-      - ms-gateway
 
-volumes:
-  mongo-data:
+  mongodb-patient:
+    image: mongo:latest
+    container_name: mongodb-patient
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: medilabo
+      MONGO_INITDB_ROOT_USERNAME: michellerkmairet
+      MONGO_INITDB_ROOT_PASSWORD: jexya7JvqHpoZAJM
+
+  mongodb-notes:
+    image: mongo:latest
+    container_name: mongodb-notes
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_DATABASE: medilabo_notes
+      MONGO_INITDB_ROOT_USERNAME: notes_user
+      MONGO_INITDB_ROOT_PASSWORD: secure_password
+
+networks:
+  default:
+    driver: bridge

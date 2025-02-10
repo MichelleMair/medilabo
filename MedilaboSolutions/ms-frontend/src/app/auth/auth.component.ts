@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
@@ -15,6 +15,7 @@ export class AuthComponent {
   constructor(private http: HttpClient, private router : Router) {}
 
   onLogin() {
+    //const headers = new HttpHeaders({ 'Content-Type' : 'application/json' });
     this.http.post<any>(environment.AUTH_URL, this.credentials).subscribe({
       next: (response) => {
         console.log('Login successful', response);

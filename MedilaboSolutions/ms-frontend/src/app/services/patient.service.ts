@@ -21,7 +21,7 @@ export class PatientService {
     }
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<any[]>(`${this.apiUrl}`, { headers }).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}`, { headers, withCredentials: true }).pipe(
       map(patients => {
           console.log("Réponse brute de l'API(patient.service.ts): ", patients);
           return patients.map(p => ({
