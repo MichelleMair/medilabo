@@ -3,8 +3,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: calc(100vh - 150px);
     background-color: #f0f2f5;
+    padding-top: 150px;
   }
 
   .auth-form {

@@ -76,7 +76,8 @@ public class LoginController {
 			
 			return Map.of(
 					"token", token,
-					"role", role);
+					"role", role,
+					"username", providedUsername);
 		}
 		logger.info("Echec de l'authentification pour l'utilisateur: {} ", providedUsername);
 		throw new RuntimeException("Invalid username or password");

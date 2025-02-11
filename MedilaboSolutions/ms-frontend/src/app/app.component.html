@@ -1,10 +1,21 @@
-<header class="app-header">
-    <div class="app-title">{{ title }}</div>
+<div id="scroll-animate">
+    <div id="scroll-animate-main">
+        <div class="wrapper-parallax">
 
-    <div class="user-info" *ngIf="username">
-        Logged in as: <strong>{{ username }}</strong>
-        <button class="logout-btn" (click)="logout()">Logout</button>
+            <header class="app-header">
+                <div class="app-title">{{ title }}</div>
+
+                <div class="user-info" *ngIf="username && username !== ''">
+                    Logged in as: <strong>{{ username }}</strong>
+                    <button class="logout-btn" (click)="logout()">Logout</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <router-outlet></router-outlet>
+            </main>
+
+        </div>
     </div>
-</header>
+</div>
 
-<router-outlet></router-outlet>

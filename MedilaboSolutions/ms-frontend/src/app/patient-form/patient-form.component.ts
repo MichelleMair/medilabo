@@ -64,4 +64,8 @@ export class PatientFormComponent implements OnInit{
       });
     }
   }
+
+  cancel() {
+    this.router.navigate(['/patients']);
+  }
 }

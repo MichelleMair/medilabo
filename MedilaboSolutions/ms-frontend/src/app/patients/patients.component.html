@@ -5,33 +5,34 @@
 
 <p *ngIf="patients && patients.length === 0">Aucun patient trouvé</p>
 
-
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Diabetes Risk Level</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody *ngIf="patients && patients.length > 0; else noPatients">
-        <ng-container *ngFor="let patient of paginatedPatients">
-            <tr *ngIf="patient.id">
-                <td>{{ patient.id }}</td>
-                <td>{{ patient.lastName }}  {{ patient.firstName}}</td>
-                <td>{{ patient.age }}</td>
-                <td> {{ patient.riskLevel || 'Calculating ...' }}</td>
-                <td>
-                    <button (click)="viewNotes(patient.patId)">View notes</button>
-                    <button (click)="editPatient(patient)">Edit</button>
-                    <button (click)="deletePatient(patient.id)">Delete</button>
-                </td>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Diabetes Risk Level</th>
+                <th>Actions</th>
             </tr>
-        </ng-container>
-    </tbody>
-</table>
+        </thead>
+        <tbody *ngIf="patients && patients.length > 0; else noPatients">
+            <ng-container *ngFor="let patient of paginatedPatients">
+                <tr *ngIf="patient.id">
+                    <td>{{ patient.id }}</td>
+                    <td>{{ patient.lastName }}  {{ patient.firstName}}</td>
+                    <td>{{ patient.age }}</td>
+                    <td> {{ patient.riskLevel || 'Calculating ...' }}</td>
+                    <td>
+                        <button class="btn-view" (click)="viewNotes(patient.patId)">View notes</button>
+                        <button class="btn-edit" (click)="editPatient(patient)">Edit</button>
+                        <button class="btn-delete" (click)="deletePatient(patient.id)">Delete</button>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>
 
 <!-- Boutons de pagination -->
  <div class="pagination-controls">

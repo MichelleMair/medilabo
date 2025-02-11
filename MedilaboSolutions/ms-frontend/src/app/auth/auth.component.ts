@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -12,13 +13,17 @@ export class AuthComponent {
   credentials = { username: '', password: ''};
   errorMessage: string = '';
 
-  constructor(private http: HttpClient, private router : Router) {}
+  constructor(private http: HttpClient, private router : Router, private authService: AuthService) {}
 
   onLogin() {
-    //const headers = new HttpHeaders({ 'Content-Type' : 'application/json' });
     this.http.post<any>(environment.AUTH_URL, this.credentials).subscribe({
       next: (response) => {
         console.log('Login successful', response);
+
+        if (response.username) {
+          this.authService.setUsername(response.username);
+          console.log("Nom d'utilisateur stocké : ", response.username);
+        }
 
         if(response.token) {
         //Stocker le token JWT dans le localStorage
