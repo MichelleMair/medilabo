@@ -1,7 +1,7 @@
 # MedilaboSolutions
 
 MedilaboSolutions is a **microservices-based application** designed to manage patient records and assess diabetes risk using patient data and medical notes.
-This app helps healthcare professionals evaluate the likelihood of diabetes based on medical records, age gender and specific triggers.
+This app helps healthcare professionals evaluate the likelihood of diabetes based on medical records, age, gender and specific triggers.
 
 ---
 
@@ -113,16 +113,21 @@ Once the data has been inserted, comment the method and the **Configuration anno
 
 ---
 
-### Start the microservices
+### Start the microservices using Docker
 
-Each microservice must be started individually: 
+All microservices can be started using DOcker for easier management: 
+
+1. **Ensure Docker is running on your machine.**
+
+2. **Build the Docker images for all microservices:**
 
 ```bash
-cd ms-backend-patient && mvn spring-boot:run
-cd ms-notes && mvn spring-boot:run 
-cd ms-diabetes-risk && mvn spring-boot:run
-cd ms-gateway && mvn spring-boot:run 
-cd ms-frontend && npm start
+docker-compose build
+```
+
+3. **Start all microservices using Docker compose:**
+```bash
+docker-compose up
 ```
 
 Once all microservices are running, access the application at [http://localhost:4200/ms-frontend/auth](http://localhost:4200/ms-frontend/auth)
