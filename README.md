@@ -158,32 +158,68 @@ To access the application, use the following credentials:
 
 To make our application more sustainable and energy-efficient,the following **Green Code** practices have been applied or recommended
 
-### Applied Green Code Principles
+### 1. Applied Green Code Principles
 
-1. **Minimizing Unused Features**
-- Remove redundant features and simplified risk evaluation logic to avoid unnecessary processing.
+#### **Minimizing Unused Features**
 
-2. **Optimizing Data Storage** 
-- Stored only essential patient and medical note date in MongoDB 
-- Optimized queries to reduce data retrieval time and energy consumption
+- **Simplified Risk Evaluation Logic:**
+  - The `DiabetesRiskEvaluationService` uses a concise filtering method with Java Streams to process notes, avoiding unnecessary iterations.
+  - The `TriggerTerms` utility class prevents instantiation, ensuring no redundant object creation.
+- **Disabled Unused Configuration:**
+  - The `DataLoader` classes in both `ms-backend-patient` and `ms-notes` are disabled after initial data insertion to prevent redundant operations on every application startup.
 
-3. **Frontend Optimization**
+#### **Optimizing Data Storage**
+
+- **MongoDB Usage:**
+  - Only essential fields are stored in MongoDB for patients and notes. Optional fields like `address` and `phoneNumber` are nullable and not mandatory.
+  - Efficient querying in `PatientRepository` with methods like `existsByFirstNameAndLastNameAndDateOfBirth` to avoid duplicate patient entries.
+
+- **Lazy Loading of Data:**
+  - Patient age is calculated on-the-fly using `@Transient` in the `Patient` model, avoiding redundant storage.
+
+#### **Frontend Optimization**
 - Implemented lazy loading for Angular modules to minimize resource consumption.
 - Optimized static assets to reduce load times.
 
-4. **Pagination Over infinite Scrolling**
-- Implements pagination in patient lists to limit the amount of data loaded at once.  
+#### **Pagination Over infinite Scrolling**
+- Implements pagination in patient lists to limit the amount of data loaded at once.
 
-### Future Improvments for Green Code
+  
+#### **Efficient Logging**
+- **Use of SLF4J Logger:**
+  - Consistent use of `Logger` instead of `System.out.println` for logging in `PatientService`, `LoginController`, and other services.
+  - Example:
+    ```java
+    private static final Logger logger = LoggerFactory.getLogger(PatientService.class);
+    logger.info("Adding patient : {}", patient);
+    ```
 
-1. **Microservices Caching**
+#### **Resource Efficiency**
+- **OpenFeign for Inter-service Communication:**
+  - Efficiently manages API calls between microservices, reducing overhead.
+- **Token-Based Authentication:**
+  - JWT tokens are used for secure and efficient stateless authentication across services.
+
+#### **Code Reusability and Modularity**
+- **Utility Classes and Configuration Files:**
+  - `TriggerTerms` as a reusable utility class.
+  - Security configurations are modular and consistently applied across microservices.
+
+
+---
+
+### 2. Future Improvments for Green Code
+
+#### **Microservices Caching**
+
 - Implement caching of microservice results to reduce redundant calls and processing
 
-2. **Reduce logs in Production**
+#### **Reduce logs in Production**
 - Configure logging levels to minimize unnecessary log entries in production, reducing I/O operations. 
 
-3. **Compress API Response**
+#### **Compress API Response**
 - Enable JSON response compression to reduce network data transfer.
+
 
 --- 
 
