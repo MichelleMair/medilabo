@@ -58,18 +58,4 @@ export class PatientService {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 
-  //map patients data (cluster: patients) with patId in notes' cluster
-  mapPatientsWithPatIds(patients: any[]): Observable<any[]> {
-    return forkJoin(
-      patients.map((patient) =>
-        this.notesService.getNotesByPatientId(patient.patId).pipe(
-          map((notes: any[]) => ({
-              ...patient, 
-              notesCount: notes.length,
-          }))
-        )
-      )
-    );
-  }
-
 }

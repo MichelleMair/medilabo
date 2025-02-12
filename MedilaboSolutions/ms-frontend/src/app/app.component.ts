@@ -14,8 +14,6 @@ export class AppComponent {
   constructor(private router: Router, private authService: AuthService) {
     this.authService.username$.subscribe(username => {
       this.username = username || '';
-      console.log("Nom d'utilisateur détecté (appComponent): ", this.username);
-      console.log("Nom d'utilisateur dans localStorage: ", localStorage.getItem('username'));
     });
   }
 

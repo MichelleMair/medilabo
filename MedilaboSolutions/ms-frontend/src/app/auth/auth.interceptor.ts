@@ -20,8 +20,6 @@ export class AuthInterceptor implements HttpInterceptor {
                     'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
                 },
             });
-            // Log pour vérifier que le token est bien ajouté 
-            console.log("Token ajouté dans l'en-tête: ", request.headers.get("Authorization"));
         }
         return next.handle(request).pipe(
             catchError((error : HttpErrorResponse) => {

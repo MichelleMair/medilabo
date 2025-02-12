@@ -1,4 +1,4 @@
-import { Component , ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component , ChangeDetectorRef } from '@angular/core';
 import { PatientService } from '../services/patient.service';
 import { NotesService } from '../services/notes.service';
 import { DiabetesRiskService } from '../services/diabetes-risk.service';
@@ -22,8 +22,7 @@ export class PatientsComponent {
   totalPages: number = 1;
 
   constructor(
-    private cdr: ChangeDetectorRef, 
-    private ngZone : NgZone, 
+    private cdr: ChangeDetectorRef,  
     private patientService: PatientService, 
     private notesService: NotesService, 
     private diabetesRiskService: DiabetesRiskService, 
@@ -51,7 +50,7 @@ export class PatientsComponent {
 
         patients.forEach(patient => {
           if (!patient.id) {
-            console.error("Un patient n'a pas de 'id' valide: ", patient);
+            console.error("No valid id for : ", patient);
           }
 
           // Récupération du niveau de risque 
@@ -61,7 +60,7 @@ export class PatientsComponent {
               this.cdr.markForCheck(); 
             },
             error : (err) => {
-              console.error(`Erreur lors de la récupération du risque pour le patient ID ${patient.patId}: `, err);
+              console.error(`Failed to retrieve risk level for patient with ID ${patient.patId}: `, err);
             }
           })
         });
@@ -104,7 +103,7 @@ export class PatientsComponent {
 
   viewNotes(patId: number) {
     if (!patId) {
-      console.error('ERREUR: patId est null ou undefined pou run patient.');
+      console.error('ERREUR: patId is null or undefined for this patient.');
       return;
     }
     if (patId <= 0) {
@@ -165,7 +164,7 @@ export class PatientsComponent {
             this.cdr.markForCheck();
           },
           error : (err) => {
-            console.error('Erreur lors du recalcul du risque de diabète.', err);
+            console.error('Failed to recalculate diabetes risk level.', err);
           }
         });
       },
