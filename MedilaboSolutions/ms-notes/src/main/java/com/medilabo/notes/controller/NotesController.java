@@ -22,6 +22,7 @@ public class NotesController {
 
 	private final NotesService notesService;
 	
+	// Constructor
 	public NotesController(NotesService notesService) {
 		this.notesService = notesService;
 	}
@@ -72,6 +73,11 @@ public class NotesController {
 		return ResponseEntity.ok(note);
 	}
 	
+	/**
+	 * Deletes a note by its ID
+	 * @param noteId
+	 * @return ResponseEntity with no content
+	 */
 	@DeleteMapping("/{noteId}")
 	public ResponseEntity<Void> deleteNote (@PathVariable String noteId) {
 		notesService.deleteNoteById(noteId);

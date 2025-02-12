@@ -38,18 +38,16 @@ public class LoginController {
 		this.passwordEncoder = passwordEncoder;
 	}
 	
+	/**
+	 * Authenticates the user and generates a JWT token
+	 * @param credentials The user's credentials (username and password)
+	 * @return Map containing the JWT token and user role
+	 */
 	@PostMapping("/api/auth")
 	public Map<String, String> authenticate(@RequestBody Map<String, String> credentials) {
-		logger.info("Requête POST reçue pour /api/auth avec les données de connexion: {}", credentials);
 		
 		String providedUsername = credentials.get("username");
 		String providedPassword = credentials.get("password");
-		
-		logger.info("Username fourni: {}, Password fourni: {}", providedUsername, providedPassword);
-		
-		//Ajout de lofs pour vérifier les valeurs ddes propriétés injectées
-		logger.info("Username attendu (depuis properties/env): {}", username);
-		logger.info("Mot de passe attendu (encodé depuis properties/env): {}", password);
 		
 		
 		if (username.equals(providedUsername) && passwordEncoder.matches(providedPassword, password)) {
@@ -66,8 +64,6 @@ public class LoginController {
 					.subject(providedUsername)
 					.claim("roles", List.of(role))
 					.build();
-			
-			System.out.println("Claims: " + claims);
 			
 			JwtEncoderParameters parameters = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims);
 			

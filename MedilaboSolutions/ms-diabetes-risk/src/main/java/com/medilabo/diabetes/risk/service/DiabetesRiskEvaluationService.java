@@ -25,6 +25,12 @@ public class DiabetesRiskEvaluationService {
 	}
 	
 	
+	/**
+	 * Calculates the age of a patient based on the date of birth
+	 * @param birthDate
+	 * @param currentDate
+	 * @return age 
+	 */
 	public int calculateAge(LocalDate birthDate, LocalDate currentDate) {
 		if((birthDate != null) && (currentDate != null)) {
 			return Period.between(birthDate, currentDate).getYears();
@@ -32,6 +38,11 @@ public class DiabetesRiskEvaluationService {
 		return 0;
 	}
 	
+	/**
+	 * Evaluates the diabetes risk for a given patient ID.
+	 * @param patId The generate patient ID with the getNextSequenceValue() in ms-backend-patient
+	 * @return the risk level as a String (None, Borderline, In Danger, Early onset)
+	 */
 	public String evaluateRisk(int patId) {
 		Patient patient = patientClient.getPatientByPatId(patId);
 		List<Note> notes = notesClient.getNotesByPatientId(patId);

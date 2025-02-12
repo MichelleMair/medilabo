@@ -22,8 +22,7 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
 	public GatewayFilter apply(Config config) {
 		return (exchange, chain) -> {
 			String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-		
-			System.out.println("Authorization" + authHeader);
+
 			if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 				exchange.getResponse().getHeaders().add("Cache-Control",  "no-store, no-cache, must-revalidate, proxy-revalidate");
 				exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
@@ -31,7 +30,6 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
 			}
 			
 			String token = authHeader.substring(7);
-			System.out.println("Extracted Token : " + token);
 			
 			return this.jwtDecoder.decode(token)
 					.flatMap(jwt -> {

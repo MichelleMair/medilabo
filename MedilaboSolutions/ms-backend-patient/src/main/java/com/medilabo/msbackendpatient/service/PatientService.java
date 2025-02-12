@@ -31,7 +31,12 @@ public class PatientService {
 	}
 	
 	
-	//Generate custom increment ID
+
+	/**
+	 * Generates the next sequence value for custom patient IDS  (patId)
+	 * @param sequenceName The name of the sequence
+	 * @return the next sequence value
+	 */
 	public int getNextSequenceValue(String sequenceName) {
 		Query query = new Query(Criteria.where("_id").is(sequenceName));
 		Update update = new Update().inc("sequenceValue", 1);
@@ -46,7 +51,12 @@ public class PatientService {
 		return counter.getSequenceValue();
 	}
 	
-	// Calculate patient's age
+	
+	/**
+	 * Calculates the age of a patient based on the date of birth
+	 * @param birthDate The date of birth of the patient
+	 * @return the age in years
+	 */
 	public int calculateAge(LocalDate birthDate) {
 		if(birthDate == null) {
 			return 0;

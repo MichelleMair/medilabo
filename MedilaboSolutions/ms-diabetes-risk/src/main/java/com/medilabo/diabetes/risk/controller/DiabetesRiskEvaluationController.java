@@ -13,10 +13,17 @@ public class DiabetesRiskEvaluationController {
 
 	private final DiabetesRiskEvaluationService diabetesRiskEvaluationService;
 	
+	//Constructor for DiabetesRiskEvaluationController
 	public DiabetesRiskEvaluationController (DiabetesRiskEvaluationService diabetesRiskEvaluationService) {
 		this.diabetesRiskEvaluationService = diabetesRiskEvaluationService;
 	}
 	
+	/**
+	 * Evaluates the diabetes risk level for a patient by their id
+	 * 
+	 * @param id The patient ID
+	 * @return The risk level as a string 
+	 */
 	@GetMapping("/{id}")
 	public String getRiskLevel(@PathVariable int id) {
 		return diabetesRiskEvaluationService.evaluateRisk(id);
