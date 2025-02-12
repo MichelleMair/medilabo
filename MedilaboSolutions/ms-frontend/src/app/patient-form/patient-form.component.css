@@ -1,3 +1,10 @@
+.table-title {
+    margin: 0 auto;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+  }
+
 .patient-form {
     width: 50%;
     margin: 0 auto;
@@ -35,7 +42,7 @@
 }
 
 .save-button, .cancel-button {
-    background-color: #007bff;
+    background-color: #1463b8;
     color: white;
     font-size: 16px;
     padding: 10px 20px;
@@ -46,9 +53,9 @@
 }
 
 .cancel-button:hover {
-    background-color: #0056b3;
+    background-color: #043e77;
 }
 
 .save-button:hover {
-    background-color: #004080;
+    background-color: #063d74;
 }

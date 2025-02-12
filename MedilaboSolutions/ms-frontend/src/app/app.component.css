@@ -11,7 +11,7 @@
 
 .wrapper-parallax {
   margin-top: 0;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: none;
 }
 
 .app-header {
@@ -74,6 +74,13 @@
     position: relative;
     z-index: 5;
     padding: 20px;
+    box-shadow: none;
+  }
+
+  footer {
+    background: linear-gradient(to bottom right, #f4f4f4, #e9ecef);
+    border-top: none;
+    box-shadow: none;
   }
 
   /* Smooth Scrolling */ 
