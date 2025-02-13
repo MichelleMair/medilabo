@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from "./app.component";
@@ -26,12 +26,11 @@ const routes: Routes = [
         PatientsComponent,
         PatientFormComponent
     ],
-
     imports: [
+        RouterModule.forRoot(routes),
         BrowserModule,
         FormsModule,
-        HttpClientModule,
-        RouterModule.forRoot (routes)
+        HttpClientModule
     ],
     providers: [
         {
