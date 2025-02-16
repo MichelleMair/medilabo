@@ -7,13 +7,11 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
-import com.medilabo.msbackendpatient.model.Patient;
-
 public class PatientTest {
 
 	@Test
 	public void testPatientCreation() {
-		Patient patient = new Patient ("1", "John", "Doe", LocalDate.of(1985, 1,1), "Male", "123 street", "987654321");
+		Patient patient = new Patient (1L, "John", "Doe", LocalDate.of(1985, 1,1), "Male", "123 street", "987654321");
 		
 		assertNotNull(patient);
 		assertEquals("John", patient.getFirstName());

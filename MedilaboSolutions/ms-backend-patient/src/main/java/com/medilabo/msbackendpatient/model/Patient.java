@@ -2,10 +2,12 @@ package com.medilabo.msbackendpatient.model;
 
 import java.time.LocalDate;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -17,55 +19,38 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "patients")
+@Entity
+@Table(name="patients")
 public class Patient {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@NotBlank(message= "First name is required")
+	@Column(name= "first_name", nullable= false)
 	private String firstName;
 	
 	@NotBlank(message= "Last name is required")
+	@Column(name= "last_name", nullable= false)
 	private String lastName;
 	
 	@NotNull(message= "Date of birth is required")
 	@Past(message= "Date of birth must be in the past")
+	@Column(name= "date_of_birth", nullable= false)
 	private LocalDate dateOfBirth;
 	
-	@Transient
-	private int age;
 	
 	@Pattern(regexp= "^(Male|Female|Other)$", message= "Gender must be 'Male', 'Female', or 'Other'.")
 	@NotBlank(message= "Gender is required")
+	@Column(name= "gender", nullable= false)
 	private String gender;
 	
+	@Column(name= "address")
 	private String address;
 	
 	@Pattern(regexp= "^\\+?[0-9\\-\\s]*$", message= "Phone number must be valid")
+	@Column(name= "phone_number")
 	private String phoneNumber;
-	
-	private int patId;
-	
-	public Patient(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String address, String phoneNumber) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.dateOfBirth = dateOfBirth;
-		this.gender = gender;
-		this.address = address;
-		this.phoneNumber = phoneNumber;
-	}
-	
-	public Patient(String id, String firstName, String lastName, LocalDate dateOfBirth, String gender, String address, String phoneNumber, int patId) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.dateOfBirth = dateOfBirth;
-		this.gender = gender;
-		this.address = address;
-		this.phoneNumber = phoneNumber;
-		this.patId = patId;
-	}
 	
 }

@@ -16,16 +16,11 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 
+import com.medilabo.msbackendpatient.dto.PatientDTO;
 import com.medilabo.msbackendpatient.exception.PatientNotFoundException;
 import com.medilabo.msbackendpatient.model.Patient;
-import com.medilabo.msbackendpatient.model.SequenceCounter;
 import com.medilabo.msbackendpatient.repository.PatientRepository;
-import com.medilabo.msbackendpatient.service.PatientService;
 
 
 public class PatientServiceTest {
@@ -33,56 +28,43 @@ public class PatientServiceTest {
 	@Mock
 	private PatientRepository patientRepository;
 	
-	@Mock
-	private MongoOperations mongoOperations;
-	
 	@InjectMocks
 	private PatientService patientService;
 	
 	private Patient testPatient;
+	private PatientDTO testpatientDTO;
 	
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
 		
-		testPatient = new Patient();
-		testPatient.setId("123");
-		testPatient.setFirstName("John");
-		testPatient.setLastName("Doe");
-		testPatient.setDateOfBirth(LocalDate.of(1985,1, 1));
-		testPatient.setGender("Male");
+		testPatient = new Patient(1L, "John", "Doe", LocalDate.of(1985,1, 1),"Male", "123 street", "987654321");
+		testpatientDTO =  new PatientDTO(1L, "John", "Doe", LocalDate.of(1985,1, 1), 38, "Male", "123 street", "987654321", 1);
 	}
 	
 	@Test
 	void testGetPatientByIdSuccess() {
-		when(patientRepository.findById("123")).thenReturn(Optional.of(testPatient));
+		when(patientRepository.findById(1L)).thenReturn(Optional.of(testPatient));
 		
-		Patient result = patientService.getPatientById("123");
+		PatientDTO result = patientService.getPatientById(1L);
 		
 		assertNotNull(result);
 		assertEquals("John", result.getFirstName());
-		verify(patientRepository, times(1)).findById("123");
+		verify(patientRepository, times(1)).findById(1L);
 	}
 	
 	@Test
 	void testGetPatientByIdNotFound() {
-		when(patientRepository.findById("123")).thenReturn(Optional.empty());
+		when(patientRepository.findById(1L)).thenReturn(Optional.empty());
 		
-		assertThrows(PatientNotFoundException.class, () -> patientService.getPatientById("123"));
+		assertThrows(PatientNotFoundException.class, () -> patientService.getPatientById(1L));
 	}
 	
 	@Test
 	void testAddPatient() {
-		when(mongoOperations.findAndModify(
-				ArgumentMatchers.any(Query.class), 
-				ArgumentMatchers.any(Update.class), 
-				ArgumentMatchers.any(FindAndModifyOptions.class),
-				ArgumentMatchers.eq(SequenceCounter.class)))
-				.thenReturn(new SequenceCounter("patients", 1));
+		when(patientRepository.save(testPatient)).thenReturn(testPatient);
 		
-		when(patientRepository.save(ArgumentMatchers.any(Patient.class))).thenReturn(testPatient);
-		
-		Patient result = patientService.addPatient(testPatient);
+		PatientDTO result = patientService.addPatient(testpatientDTO);
 		
 		assertNotNull(result);
 		assertEquals("John", result.getFirstName());
@@ -92,26 +74,24 @@ public class PatientServiceTest {
 	
 	@Test
 	void testUpdatePatientSuccess() {
-		when(patientRepository.findById("123")).thenReturn(Optional.of(testPatient));
-		when(patientRepository.save(ArgumentMatchers.any(Patient.class))).thenReturn(testPatient);
+		when(patientRepository.findById(1L)).thenReturn(Optional.of(testPatient));
+		when(patientRepository.save(testPatient)).thenReturn(testPatient);
 		
-		Patient updatedPatient = new Patient();
-		updatedPatient.setFirstName("Jane");
+		PatientDTO updatedPatientDTO = new PatientDTO(1L, "Jane", "Doe", LocalDate.of(1985,1, 1), 38, "Female", "456 street", "987654321", 1);
 		
-		Patient result = patientService.updatePatient("123", updatedPatient);
+		PatientDTO result = patientService.updatePatient(1L , updatedPatientDTO);
 		
 		assertEquals("Jane", result.getFirstName());
-		verify(patientRepository, times(1)).findById("123");
+		verify(patientRepository, times(1)).findById(1L);
 		verify(patientRepository, times(1)).save(ArgumentMatchers.any(Patient.class));
 	}
 	
 	@Test
 	void testUpdatePatientNotFound() {
-		when(patientRepository.findById("123")).thenReturn(Optional.empty());
+		when(patientRepository.findById(1L)).thenReturn(Optional.empty());
 		
-		Patient updatedPatient = new Patient();
-		updatedPatient.setFirstName("Jane");
+		PatientDTO updatedPatientDTO = new PatientDTO(1L, "Jane", "Doe", LocalDate.of(1985,1, 1), 38, "Female", "456 street", "987654321", 1);
 		
-		assertThrows(PatientNotFoundException.class, () -> patientService.updatePatient("123", updatedPatient));
+		assertThrows(PatientNotFoundException.class, () -> patientService.updatePatient(1L, updatedPatientDTO));
 	}
 }

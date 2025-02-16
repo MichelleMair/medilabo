@@ -5,6 +5,9 @@ HELP.md
 /target/
 MedilaboSolutions/target/
 
+### Variables d'environnements ###
+.env
+
 ### Configuration Eclipse ###
 .classpath
 .project

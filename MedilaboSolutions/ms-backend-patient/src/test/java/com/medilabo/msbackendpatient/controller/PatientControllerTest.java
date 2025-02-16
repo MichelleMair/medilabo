@@ -30,8 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medilabo.msbackendpatient.config.test.TestSecurityConfig;
-import com.medilabo.msbackendpatient.controller.PatientController;
-import com.medilabo.msbackendpatient.model.Patient;
+import com.medilabo.msbackendpatient.dto.PatientDTO;
 import com.medilabo.msbackendpatient.service.PatientService;
 
 @Import(TestSecurityConfig.class)
@@ -48,15 +47,15 @@ public class PatientControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 	
-	private Patient patient1;
-	private Patient patient2;
-	private List<Patient> patients;
+	private PatientDTO patient1;
+	private PatientDTO patient2;
+	private List<PatientDTO> patients;
 	
 	@BeforeEach
 	void setUp() {
 		
-		patient1 = new Patient ("1", "John", "Doe", LocalDate.of(1985, 1,1), "Male", "123 street", "987654321");
-		patient2 = new Patient("1", "Jane", "Doe", LocalDate.of(1990, 2,1), "Female", "456 av street", "123456789");
+		patient1 = new PatientDTO (1L, "John", "Doe", LocalDate.of(1985, 1,1), 38, "Male", "123 street", "987654321", 1);
+		patient2 = new PatientDTO (2L, "Jane", "Doe", LocalDate.of(1990, 2,1), 33, "Female", "456 av street", "123456789", 2);
 		patients = List.of(patient1, patient2);
 	}
 	
@@ -79,21 +78,36 @@ public class PatientControllerTest {
 	@WithMockUser(username= "user", roles= {"USER"})
 	void testGetPatientById() throws Exception {
 		
-		when(patientService.getPatientById("1")).thenReturn(patient1);
+		when(patientService.getPatientById(1L)).thenReturn(patient1);
 		
-		mockMvc.perform(get("/api/patients/{id}" , "1"))
+		mockMvc.perform(get("/api/patients/{id}" , 1L))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.firstName").value("John"))
 				.andExpect(jsonPath("$.lastName").value("Doe"));
 		
-		verify(patientService, times(1)).getPatientById("1");
+		verify(patientService, times(1)).getPatientById(1L);
 	}
+	
+	@Test
+	@DisplayName("Get patient by patId should return the patient")
+	@WithMockUser(username= "user", roles= {"USER"})
+	void testGetPatientByPatId() throws Exception {
+		
+		when(patientService.getPatientByPatId(1)).thenReturn(patient1);
+		
+		mockMvc.perform(get("/api/patients/patId/{patId}" , 1))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.firstName").value("John"));
+		
+		verify(patientService, times(1)).getPatientByPatId(1);
+	}
+	
 	
 	@Test
 	@DisplayName("Add new patient shoudl return the created patient")
 	@WithMockUser(username= "admin", roles= {"ADMIN"})
 	void testAddPatient() throws Exception {
-		when(patientService.addPatient(Mockito.any(Patient.class))).thenReturn(patient1);
+		when(patientService.addPatient(Mockito.any(PatientDTO.class))).thenReturn(patient1);
 		
 		mockMvc.perform(post("/api/patients")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -101,7 +115,7 @@ public class PatientControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.firstName").value("John"));
 		
-		verify(patientService, times(1)).addPatient(Mockito.any(Patient.class));
+		verify(patientService, times(1)).addPatient(Mockito.any(PatientDTO.class));
 	}
 	
 	@Test
@@ -109,16 +123,16 @@ public class PatientControllerTest {
 	@WithMockUser(username= "admin", roles= {"ADMIN"})
 	void testUpdatePatient() throws Exception {
 
-		when(patientService.updatePatient(eq("1"), Mockito.any(Patient.class))).thenReturn(patient2);
+		when(patientService.updatePatient(eq(2L), Mockito.any(PatientDTO.class))).thenReturn(patient2);
 		
-		mockMvc.perform(put("/api/patients/{id}", "1")
+		mockMvc.perform(put("/api/patients/{id}", 2L)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(patient2)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.firstName").value("Jane"))
 				.andExpect(jsonPath("$.gender").value("Female"));
 		
-		verify(patientService, times(1)).updatePatient(eq("1"), Mockito.any(Patient.class));
+		verify(patientService, times(1)).updatePatient(eq(2L), Mockito.any(PatientDTO.class));
 	}
 	
 	@Test
@@ -126,12 +140,12 @@ public class PatientControllerTest {
 	@WithMockUser(username= "admin", roles= {"ADMIN"})
 	void testDeletePatient() throws Exception{
 		
-		doNothing().when(patientService).deletePatient("1");
+		doNothing().when(patientService).deletePatient(1L);
 		
-		mockMvc.perform(delete("/api/patients/{id}", "1"))
+		mockMvc.perform(delete("/api/patients/{id}", 1L))
 				.andExpect(status().isOk());
 		
-		verify(patientService, times(1)).deletePatient("1");
+		verify(patientService, times(1)).deletePatient(1L);
 	}
 	
 }
