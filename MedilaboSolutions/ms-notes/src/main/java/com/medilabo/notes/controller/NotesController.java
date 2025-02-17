@@ -45,9 +45,7 @@ public class NotesController {
 	 */
 	@GetMapping("/{patId}")
 	public ResponseEntity<List<Notes>> getNotesByPatientId(@PathVariable int patId) {
-		System.out.println("Fetching notes for patId: " + patId);
 		List<Notes> notesList = notesService.getNotesByPatientId(patId);
-		System.out.println("Notes found: " + notesList);
 		return ResponseEntity.ok(notesList);
 	}
 	

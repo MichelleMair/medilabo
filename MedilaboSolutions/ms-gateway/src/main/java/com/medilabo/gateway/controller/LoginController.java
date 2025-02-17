@@ -68,7 +68,6 @@ public class LoginController {
 			JwtEncoderParameters parameters = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims);
 			
 			String token = this.jwtEncoder.encode(parameters).getTokenValue();
-			logger.info("Token JWT généré: {}", token);
 			
 			return Map.of(
 					"token", token,

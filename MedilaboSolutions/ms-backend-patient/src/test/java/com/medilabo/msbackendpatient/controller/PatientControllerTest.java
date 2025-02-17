@@ -24,6 +24,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,6 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medilabo.msbackendpatient.config.test.TestSecurityConfig;
 import com.medilabo.msbackendpatient.dto.PatientDTO;
+import com.medilabo.msbackendpatient.repository.PatientRepository;
 import com.medilabo.msbackendpatient.service.PatientService;
 
 @Import(TestSecurityConfig.class)
@@ -43,6 +45,12 @@ public class PatientControllerTest {
 	
 	@MockBean
 	private PatientService patientService;
+	
+	@MockBean
+	private PatientRepository patientRepository;
+	
+	@MockBean
+	private JwtDecoder jwtDecoder;
 	
 	@Autowired
 	private ObjectMapper objectMapper;

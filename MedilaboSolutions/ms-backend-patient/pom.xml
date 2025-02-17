@@ -125,10 +125,24 @@
     		<artifactId>spring-security-test</artifactId>
     		<scope>test</scope>
 		</dependency>
+		<!-- H2 db for tests purposes -->
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <scope>test</scope>
+		</dependency>
 	</dependencies>
-
 	<build>
 		<finalName>ms-backend-patient</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -140,5 +154,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
