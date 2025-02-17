@@ -96,24 +96,28 @@ npm install
 ### Insert Initial Data into MongoDB 
 
 Be careful, if you use Docker to start the microservices, **no manual data insertions is required**.
-Please refer to [Start the microservices using Docker](### Start the microservices using Docker)
+
+Please refer to **Start the microservices using Docker**
 
 To insert initial data into MySQL database, table **patients** and MongoDB database, collection **notes**:
 
 1. **Patients**
  - navigate to the `ms-backend-patient/database/` directory
  - import the init.sql script into your MySQL database:
-  ```bash 
-  mysql -u root -p medilabo_patients < database/init.sql
-  ```
+ 
+```bash 
+mysql -u root -p medilabo_patients < database/init.sql
+```
  - This will create patients table and insert initial patients' data. 
 
 2. **Notes** 
  - Ensure MongoDB is running locally on you computer
  - Navigate to the `ms-notes/` directory and run:
-   ```bash 
-  mongosh < init-mongo.js
-  ```
+ 
+```bash 
+mongosh < init-mongo.js
+```
+
  - this will insert medical records in `notes` collections. 
 
 ---
@@ -128,7 +132,7 @@ The **docker-compose.yml** file ensures that all necessary databases are initial
 - MySQL (ms-backend-patient): The init.sql script is executed on startup to set up the patients table and populate it with sample data. 
 - MongoDB (ms-notes): the init-mongo.js script runs automatically when the MongoDB container starts, inserting initial medical notes into the database. 
 
-#### Hot to run with **docker-compose.yml**
+#### How to run with **docker-compose.yml**
 
 1. **Ensure Docker is running on your machine.**
 
