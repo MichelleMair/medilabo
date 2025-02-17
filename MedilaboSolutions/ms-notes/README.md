@@ -10,21 +10,22 @@ This microservice is responsible for **managing patient medical notes**.
 ## Technologies Used
 
 - **Spring Boot Framework**
-- **MongoDB**: collections: `notes`
+- **MongoDB**: collections: `notes` (stores notes in NoSQL collection)
 
 ## MongoDB database
 
 The MongoDB database consists of a `notes` collection for medical notes. 
 
 ## Insert initial data into MongoDB database
-To insert the initial data into the MongoDB database:
-For **notes collection**: 
 
- - enable the **DataLoader** class located in the package `com.medilabo.notes.config`
- - uncomment the 'loadData' method
- - restart the application
+1. Ensure MongoDB is running.
+2. Navigate to the `ms-notes/` directory.
+3. Run:
+```bash
+   mongosh < database/init-mongo.js
+```
 
-Once the data has been inserted, you can comment out the method again to avoid reinserting data on every application startup
+This will insert medical notes collection with sample medical notes.
 
 ## How to run the project
 

@@ -40,7 +40,8 @@ It uses a combination of patients records and medical notes to assess the likeli
 - **OpenFeign** : Facilitates inter-service communication.
 
 ### **Databases**
-- **MongoDB** :  NoSQL database for storing patient and medical note data. 
+- **MySQL** : MySQL database for storing patient's details (name,age gender, address, number phone)
+- **MongoDB** :  NoSQL database for storing patient's medical note data. 
 
 ---
 
@@ -48,7 +49,7 @@ It uses a combination of patients records and medical notes to assess the likeli
 
 MedilaboSOlutions is structured as a **microservices architecture** for better scalability and flexibility. 
 
-**ms-backend-patient** : manages patient data (CRUD operations on MongoDB)
+**ms-backend-patient** : manages patient data (CRUD operations on MySQL)
 **ms-notes** : stores and manages patient medical notes (MongoDB)
 **ms-diabetes-risk** : Evaluates diabetes risk using data from `ms-backend-patient` and `ms-notes`via Feign
 **ms-gateway** : handles routing, authentication and security configurations
@@ -66,7 +67,8 @@ Ensure you have the followingtools installed:
 
 - **Java 17**
 - **Maven 3+**
-- **MongoDB** (running locally or via Atlas MongoDB)
+- **MySQL** (running locally for `ms-backend-patient`)
+- **MongoDB** (running locally for `ms-notes`)
 - **Node.js + Angular CLI**
 
 ---
@@ -93,29 +95,40 @@ npm install
 
 ### Insert Initial Data into MongoDB 
 
-To insert initial data into MongoDB for **patients** and **notes**:
+Be careful, if you use Docker to start the microservices, **no manual data insertions is required**.
+Please refer to [Start the microservices using Docker](### Start the microservices using Docker)
 
-1. **Patients Collection**
- - enable the 'DataLoader' class located in the package 'com.medilabo.msbackendpatient.config'
- - uncomment the 'loadData()' method
- - Run the backend service : 
+To insert initial data into MySQL database, table **patients** and MongoDB database, collection **notes**:
+
+1. **Patients**
+ - navigate to the `ms-backend-patient/database/` directory
+ - import the init.sql script into your MySQL database:
   ```bash 
-  cd ms-backend-patientmvn spring-boot:run
+  mysql -u root -p medilabo_patients < database/init.sql
   ```
- - Once the data is inserted, you can comment out the method and the **Configuration annotation** again to avoid reinserting data on every application startup
+ - This will create patients table and insert initial patients' data. 
 
-2. **Notes Collection** 
- - Follow the same steps for `ms-notes`: enable the 'DataLoader' class located in the package 'com.medilabo.notes.config'
- - uncomment the 'loadData' method
- - restart the application
-
-Once the data has been inserted, comment the method and the **Configuration annotation** again to avoid reinserting data on every application startup
+2. **Notes** 
+ - Ensure MongoDB is running locally on you computer
+ - Navigate to the `ms-notes/` directory and run:
+   ```bash 
+  mongosh < init-mongo.js
+  ```
+ - this will insert medical records in `notes` collections. 
 
 ---
 
 ### Start the microservices using Docker
 
-All microservices can be started using DOcker for easier management: 
+All microservices can be started using Docker for easier management.
+When using DOcker Compose to start microservices, **no manual data insertions is required**
+
+The **docker-compose.yml** file ensures that all necessary databases are initialized with their respective datasets automatically. 
+
+- MySQL (ms-backend-patient): The init.sql script is executed on startup to set up the patients table and populate it with sample data. 
+- MongoDB (ms-notes): the init-mongo.js script runs automatically when the MongoDB container starts, inserting initial medical notes into the database. 
+
+#### Hot to run with **docker-compose.yml**
 
 1. **Ensure Docker is running on your machine.**
 
@@ -128,6 +141,11 @@ docker-compose build
 3. **Start all microservices using Docker compose:**
 ```bash
 docker-compose up
+```
+
+4. **Alternative commands to build and start all microservices using Docker compose:**
+```bash
+docker-compose up --build
 ```
 
 Once all microservices are running, access the application at [http://localhost:4200/ms-frontend/auth](http://localhost:4200/ms-frontend/auth)
@@ -145,7 +163,7 @@ To access the application, use the following credentials:
 
 ## Technical information
 
-- **Database**: MongoDB (collections: `patients`and `notes`)
+- **Databases**: MySQl (Table : `patients`) and MongoDB (collections: `notes`)
 - **Backend Framework** : Spring Boot (Java 17)
 - **Frontend Framework** : Angular 
 - **Security** : Spring Security 
@@ -165,17 +183,12 @@ To make our application more sustainable and energy-efficient,the following **Gr
 - **Simplified Risk Evaluation Logic:**
   - The `DiabetesRiskEvaluationService` uses a concise filtering method with Java Streams to process notes, avoiding unnecessary iterations.
   - The `TriggerTerms` utility class prevents instantiation, ensuring no redundant object creation.
-- **Disabled Unused Configuration:**
-  - The `DataLoader` classes in both `ms-backend-patient` and `ms-notes` are disabled after initial data insertion to prevent redundant operations on every application startup.
 
 #### **Optimizing Data Storage**
 
 - **MongoDB Usage:**
-  - Only essential fields are stored in MongoDB for patients and notes. Optional fields like `address` and `phoneNumber` are nullable and not mandatory.
+  - Only essential fields are stored. Optional fields like `address` and `phoneNumber` are nullable and not mandatory.
   - Efficient querying in `PatientRepository` with methods like `existsByFirstNameAndLastNameAndDateOfBirth` to avoid duplicate patient entries.
-
-- **Lazy Loading of Data:**
-  - Patient age is calculated on-the-fly using `@Transient` in the `Patient` model, avoiding redundant storage.
 
 #### **Frontend Optimization**
 - Implemented lazy loading for Angular modules to minimize resource consumption.

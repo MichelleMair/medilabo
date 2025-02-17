@@ -13,20 +13,20 @@ This microservice manages **patient records**.
 ## Technologies Used
 
 - **Spring Boot Framework**
-- **MongoDB**: collections: `patients`and `counters`
+- **MySQL** : Stores patient's details
 
-## MongoDB database
+## MySQL database
 
-The MongoDB database consists of a `patients` collection for patients details and a `counters`collection for `patId`generation
+The MySQL database consists of a `patients` table that contains patients details.
 
-## Insert initial data into MongoDB database
-To insert the initial data into the MongoDB database:
-For **patients** collection: 
- - enable the **DataLoader.java** class located in the package `com.medilabo.msbackendpatient.config`
- - uncomment the 'loadData' method
- - restart the application
+## Insert initial data into MySQL database
 
-Once the data has been inserted, you can comment out the method again to avoid reinserting data on every application startup
+1. Navigate to the `ms-backend-patient/database/` directory.
+2. Import the **init.sql** script into your MySQL database:
+```bash
+mysql -u root -p medilabo_patients < database/init.sql
+```
+This will create the patients table and insert initial patient data.
 
 ## How to run the project
 
@@ -34,7 +34,7 @@ Once the data has been inserted, you can comment out the method again to avoid r
 
 - **Java 17**
 - **Maven 3+**
-- **MongoDB**
+- **MySQL**
 
 ### 2 Start the microservices
 
