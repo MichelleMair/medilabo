@@ -22,20 +22,17 @@ export class AuthComponent {
 
         if (response.username) {
           this.authService.setUsername(response.username);
-          console.log("Nom d'utilisateur stocké : ", response.username);
         }
 
         if(response.token) {
         //Stocker le token JWT dans le localStorage
         localStorage.setItem('token', response.token);
-        console.log("Token en localStorage : ", localStorage.getItem('token'));
         } else {
           console.error("Aucun token reçu.");
         }
 
         if (response.role) {
           localStorage.setItem('role', response.role);
-          console.log("Rôle stocké dans localStorage: " , response.role) //Stocker le role de l'user
         }
 
         console.log("Redirecting to /patients...");

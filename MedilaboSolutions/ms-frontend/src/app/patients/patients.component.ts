@@ -102,7 +102,6 @@ export class PatientsComponent {
   }
 
   viewNotes(patId: number) {
-    console.log('Cliked on patient with patId: ', patId);
 
     if (!patId) {
       console.error('ERREUR: patId is null or undefined for this patient.');
@@ -113,10 +112,7 @@ export class PatientsComponent {
       return;
     }
 
-    console.log('Cliked on patient with patId: ${patId}');
-
     this.selectedPatientId = patId;
-    console.log('Selected Patient ID updated to: ', this.selectedPatientId);
 
     this.notesService.getNotesByPatientId(patId).subscribe({
       next: (notes) => {
