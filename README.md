@@ -190,7 +190,7 @@ To make our application more sustainable and energy-efficient,the following **Gr
 
 #### **Optimizing Data Storage**
 
-- **MongoDB Usage:**
+- **MySQL Usage:**
   - Only essential fields are stored. Optional fields like `address` and `phoneNumber` are nullable and not mandatory.
   - Efficient querying in `PatientRepository` with methods like `existsByFirstNameAndLastNameAndDateOfBirth` to avoid duplicate patient entries.
 
