@@ -194,10 +194,6 @@ To make our application more sustainable and energy-efficient,the following **Gr
   - Only essential fields are stored. Optional fields like `address` and `phoneNumber` are nullable and not mandatory.
   - Efficient querying in `PatientRepository` with methods like `existsByFirstNameAndLastNameAndDateOfBirth` to avoid duplicate patient entries.
 
-#### **Frontend Optimization**
-- Implemented lazy loading for Angular modules to minimize resource consumption.
-- Optimized static assets to reduce load times.
-
 #### **Pagination Over infinite Scrolling**
 - Implements pagination in patient lists to limit the amount of data loaded at once.
 
@@ -226,6 +222,10 @@ To make our application more sustainable and energy-efficient,the following **Gr
 ---
 
 ### 2. Future Improvments for Green Code
+
+#### **Frontend Optimization**
+- Implemented lazy loading for Angular modules to minimize resource consumption.
+- Optimized static assets to reduce load times.
 
 #### **Microservices Caching**
 
