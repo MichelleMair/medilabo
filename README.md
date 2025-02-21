@@ -125,7 +125,7 @@ mongosh < init-mongo.js
 ### Start the microservices using Docker
 
 All microservices can be started using Docker for easier management.
-When using DOcker Compose to start microservices, **no manual data insertions is required**
+When using Docker Compose to start microservices, **no manual data insertions is required**
 
 The **docker-compose.yml** file ensures that all necessary databases are initialized with their respective datasets automatically. 
 
