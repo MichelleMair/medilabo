@@ -18,7 +18,7 @@ export class AuthComponent {
   onLogin() {
     this.http.post<any>(environment.AUTH_URL, this.credentials).subscribe({
       next: (response) => {
-        console.log('Login successful', response);
+        console.log('Login successful');
 
         if (response.username) {
           this.authService.setUsername(response.username);

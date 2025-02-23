@@ -70,10 +70,6 @@ export class PatientsComponent {
         this.updatePaginatedPatients();
         this.cdr.markForCheck();
         this.cdr.detectChanges();
-
-        setTimeout(() => {
-          console.log('Patients after change detection: ', this.patients);
-        }, 1000);
       },
       error: (err) => {
         this.errorMessage = 'Failed to load patients. Please try again later.';

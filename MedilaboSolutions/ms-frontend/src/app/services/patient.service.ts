@@ -23,7 +23,6 @@ export class PatientService {
 
     return this.http.get<any[]>(`${this.apiUrl}`, { headers, withCredentials: true }).pipe(
       map(patients => {
-          console.log("Réponse brute de l'API(patient.service.ts): ", patients);
           return patients.map(p => ({
           id: p.id,
           firstName: p.firstName,

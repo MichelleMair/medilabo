@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -86,8 +85,7 @@ public class SecurityConfig {
 				.anyExchange().authenticated())
 			.csrf(ServerHttpSecurity.CsrfSpec::disable)
 			.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-			.addFilterAt(new LogJWTFilter(), SecurityWebFiltersOrder.AUTHENTICATION);
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 		
 		return http.build();
 	}
